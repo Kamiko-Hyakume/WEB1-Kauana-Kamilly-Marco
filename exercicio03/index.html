@@ -1,11 +1,87 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Trabalho</title>
+    <link rel="stylesheet" href="style/style.css">
+    <title>Trabalho - Lista</title>
 </head>
+
 <body>
-    
+    <header>
+        <div class="topo">
+            <div class="usuario">
+                <img src="imgs/image.png" class="carrinho">
+                <span>Kamilly</span>
+            </div>
+            <h1>Comercio.com</h1>
+        </div>
+
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Início</a></li>
+
+                <li>
+                    <a href="#">Cadastrar</a>
+                    <ul class="submenu">
+                        <li><a href="#">Inserir Item</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">Gerenciar</a>
+                    <ul class="submenu">
+                        <li><a href="#">Alterar Item</a></li>
+                        <li><a href="#">Excluir Item</a></li>
+                        <li><a href="#">Mostrar Item</a></li>
+                        <li><a href="#">Listar Todos</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="main-content">
+
+        <section id="form" class="card">
+            <h2>Cadastrar Item</h2>
+
+            <form id="taskForm">
+                <input type="hidden" id="taskId">
+
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" required>
+
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" required></textarea>
+
+                <button type="submit">Salvar</button>
+            </form>
+        </section>
+
+        <section id="lista" class="card">
+            <h2>Lista de Tarefas</h2>
+            <table aria-label="Tabela de tarefas">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody id="taskList"></tbody>
+            </table>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>Site criado por <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>
+            e <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a></p>
+    </footer>
+
+    <script src="script.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,198 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f7fa;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+}
+
+.topo h1 {
+    font-size: 24px;
+}
+
+.usuario {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.carrinho {
+    width: 35px;
+    height: 35px;
+}
+
+nav {
+    background: #34495e;
+}
+
+.menu {
+    list-style: none;
+    display: flex;
+    padding: 0 30px;
+}
+
+.menu > li {
+    position: relative;
+}
+
+.menu > li > a {
+    display: block;
+    padding: 15px 20px;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.menu > li > a:hover {
+    background: #1abc9c;
+}
+
+.submenu {
+    list-style: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #2c3e50;
+    display: none;
+    min-width: 180px;
+}
+
+.submenu li a {
+    display: block;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+}
+
+.submenu li a:hover {
+    background: #1abc9c;
+}
+
+.menu li:hover .submenu {
+    display: block;
+}
+
+.main-content {
+    padding: 30px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.card {
+    background: white;
+    padding: 25px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+}
+
+.card h2 {
+    margin-bottom: 15px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+input,
+textarea {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+}
+
+textarea {
+    resize: none;
+    height: 80px;
+}
+
+button {
+    padding: 10px;
+    background: #1abc9c;
+    border: none;
+    color: white;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: #16a085;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+th {
+    background: #34495e;
+    color: white;
+    padding: 10px;
+    text-align: left;
+}
+
+td {
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+td button {
+    padding: 6px 10px;
+    font-size: 12px;
+    margin-right: 5px;
+}
+
+.footer {
+    background: #2c3e50;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+
+.footer a {
+    color: #1abc9c;
+    text-decoration: none;
+}
+
+@media (max-width: 768px) {
+
+    .topo {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+
+    .menu {
+        flex-direction: column;
+    }
+
+    .submenu {
+        position: static;
+    }
+
+    .menu li:hover .submenu {
+        display: block;
+    }
+}
