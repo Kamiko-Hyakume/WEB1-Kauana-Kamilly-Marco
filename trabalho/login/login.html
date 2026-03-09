@@ -4,76 +4,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário</title>
+    <title>Login</title>
+    <link rel="stylesheet" href="estilo/style.css">
+    <link rel="stylesheet" href="estilo/media-query.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 
 <body>
     <main>
-        <header>
-            <div class="topo">
-            <div class="usuario">
-                <img src="imgs/image.png" class="carrinho">
+        <section id="login">
+            <div id="imagem">
+                <!--Imagem-->
             </div>
-            <h1>Comercio.com</h1>
-            <span>Kamilly</span>
-        </div>
-        </header>
 
-        <section>
-            <div>
+            <div id="formulario">
                 <h1>Login</h1>
-                <p>
-                    Esta aplicação web permite que os usuários acessem o sistema para gerenciar
-                    informações e utilizar os recursos disponíveis. Faça login para continuar.
-                </p>
+                <p>Seja Bem-vindo(a). Faça seu login para acessar!</p>
+
+                <form id="loginForm" autocomplete="on">
+                    <div class="campo">
+                        <span class="material-icons">person</span>
+                        <input type="email" name="login" id="ilogin" placeholder="Seu email" autocomplete="email">
+                    </div>
+
+                    <div class="campo">
+                        <span class="material-icons">vpn_key</span>
+                        <input type="password" name="senha" id="isenha" placeholder="Sua senha">
+                    </div>
+                    <input type="submit" value="Entrar" class="botao">
+                    <a href="esquecisenha.html" class="botao">Esqueci a senha <span
+                            class="material-icons">mail</span></a>
+                    <a href="cadastrar.html" class="botao">Não tem uma conta? Cadastre-se <span
+                            class="material-icons">person_add</span></a>
+                </form>
+
             </div>
-
-            <form action="login.php" method="post" autocomplete="on">
-
-                <!-- Login -->
-                <input type="email" name="login" placeholder="Seu email" required autocomplete="email">
-
-                <!-- Senha -->
-                <input type="password" name="senha" placeholder="Sua senha" required minlength="8" maxlength="20">
-
-                <br><br>
-
-                <!-- Lembre-me -->
-                <label>
-                    <input type="checkbox" name="lembrar">
-                    Lembre-me
-                </label>
-
-                <br><br>
-
-                <!-- Botão entrar -->
-                <input type="submit" value="Entrar">
-
-                <br><br>
-
-                <!-- Recuperar senha -->
-                <p>
-                    <a href="#">Esqueceu sua senha?</a>
-                </p>
-
-                <!-- Cadastro -->
-                <p>
-                    Ainda não possui conta?
-                    <a href="#">Cadastre-se</a>
-                </p>
-
-            </form>
         </section>
     </main>
 
-    <footer class="footer">
-        <p>
-            Site criado por 
-            <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>,
-            <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a>
-            e <a href="https://github.com/marco-wolff" target="_blank">Marco</a>
-        </p>
-    </footer>
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            window.location.href = "../index.html";
+        });
+    </script>
 </body>
 
 </html>
