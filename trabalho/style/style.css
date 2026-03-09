@@ -11,8 +11,9 @@ body{
     justify-content: center;
 }
 
-.user{
-    justify-content: flex-end;
+.carrinho{
+    height: 30px;
+    width: 30px;
 }
 
 .menu{
