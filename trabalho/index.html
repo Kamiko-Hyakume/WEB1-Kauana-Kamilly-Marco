@@ -1,87 +1,66 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista</title>
     <link rel="stylesheet" href="style/style.css">
-    <title>Trabalho - Lista</title>
 </head>
 
 <body>
-    <header>
-        <div class="topo">
-            <div class="usuario">
-                <img src="imgs/image.png" class="carrinho">
-                <span>Kamilly</span>
-            </div>
-            <h1>Comercio.com</h1>
-        </div>
 
-        <nav>
-            <ul class="menu">
-                <li><a href="#">Início</a></li>
+    <div class="topo">
+        <img src="imgs/image.png" width="30">
+        <b class="user">Kamilly</b>
+        <h1>Comercio.com</h1>
+    </div>
 
-                <li>
-                    <a href="#">Cadastrar</a>
-                    <ul class="submenu">
-                        <li><a href="#">Inserir Item</a></li>
-                    </ul>
-                </li>
+    <div class="menu">
+        <a href="#">Inicio</a>
+        <a href="#">Inserir Item</a>
+        <a href="#">Alterar Item</a>
+        <a href="#">Excluir Item</a>
+        <a href="#">Mostrar Item</a>
+        <a href="#">Listar Todos</a>
+    </div>
 
-                <li>
-                    <a href="#">Gerenciar</a>
-                    <ul class="submenu">
-                        <li><a href="#">Alterar Item</a></li>
-                        <li><a href="#">Excluir Item</a></li>
-                        <li><a href="#">Mostrar Item</a></li>
-                        <li><a href="#">Listar Todos</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </nav>
-    </header>
+    <h2>Cadastrar Item</h2>
 
-    <main class="main-content">
+    <form id="taskForm">
+        <input type="hidden" id="taskId">
 
-        <section id="form" class="card">
-            <h2>Cadastrar Item</h2>
+        <p>Titulo</p>
+        <input type="text" id="titulo">
 
-            <form id="taskForm">
-                <input type="hidden" id="taskId">
+        <p>Descricao</p>
+        <textarea id="descricao"></textarea>
 
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" required>
+        <br><br>
+        <button>Salvar</button>
+    </form>
 
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" required></textarea>
+    <h2>Lista de Tarefas</h2>
 
-                <button type="submit">Salvar</button>
-            </form>
-        </section>
+    <table border="1">
+        <tr>
+            <th>Titulo</th>
+            <th>Descricao</th>
+            <th>Acoes</th>
+        </tr>
+        <tbody id="taskList"></tbody>
+    </table>
 
-        <section id="lista" class="card">
-            <h2>Lista de Tarefas</h2>
-            <table aria-label="Tabela de tarefas">
-                <thead>
-                    <tr>
-                        <th>Título</th>
-                        <th>Descrição</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody id="taskList"></tbody>
-            </table>
-        </section>
+    <br>
 
-    </main>
-
-    <footer class="footer">
-        <p>Site criado por <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>
-            e <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a></p>
+    <footer>
+        Site criado por
+        <a href="https://github.com/Kamiko-Hyakume">Kauana</a>
+        e
+        <a href="https://github.com/kamillybirkner">Kamilly</a>
     </footer>
 
     <script src="script.js"></script>
+
 </body>
 
 </html>
