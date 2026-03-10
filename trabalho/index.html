@@ -1,74 +1,126 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
 
 <head>
     <meta charset="UTF-8">
-    <title>Lista</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
+
     <link rel="stylesheet" href="style/style.css">
+
+    <title>Comercio.com</title>
 </head>
 
 <body>
-    <header>
+
+    <header class="header">
+
         <div class="topo">
 
-            <div class="logo">
-                <img src="imgs/image.png" class="carrinho">
-                <h1>Comercio.com</h1>
-            </div>
+            <a href="index.html" class="logo" aria-label="Ir para a página inicial">
+                <img src="imgs/image.png" alt="Logo do site Comercio.com">
+            </a>
 
-            <div class="usuario">
+            <h1>Comercio.com</h1>
+
+            <div class="usuario-logado" aria-label="Usuário autenticado">
+                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">
                 <span>Kamilly</span>
-                <img src="imgs/perfil.png" class="foto-usuario">
             </div>
 
         </div>
+
+        <nav aria-label="Menu principal">
+            <ul class="menu">
+
+                <li>
+                    <a href="#">Início</a>
+                </li>
+
+                <li>
+                    <a href="#">Cadastrar</a>
+                    <ul class="submenu">
+                        <li><a href="#form">Inserir Item</a></li>
+                    </ul>
+                </li>
+
+                <li>
+                    <a href="#">Gerenciar</a>
+                    <ul class="submenu">
+                        <li><a href="#">Alterar Item</a></li>
+                        <li><a href="#">Excluir Item</a></li>
+                        <li><a href="#">Mostrar Item</a></li>
+                        <li><a href="#lista">Listar Todos</a></li>
+                    </ul>
+                </li>
+
+            </ul>
+        </nav>
+
     </header>
 
-    <main>
-        <div class="menu">
-            <a href="#">Inicio</a>
-            <a href="#">Inserir Item</a>
-            <a href="#">Alterar Item</a>
-            <a href="#">Excluir Item</a>
-            <a href="#">Mostrar Item</a>
-            <a href="#">Listar Todos</a>
-        </div>
+    <main class="main-content">
 
-        <h2>Cadastrar Item</h2>
+        <section id="form" class="card" aria-labelledby="titulo-form">
 
-        <form id="taskForm">
-            <input type="hidden" id="taskId">
+            <h2 id="titulo-form">Cadastrar Item</h2>
 
-            <p>Titulo</p>
+            <form id="taskForm">
 
-            <input type="text" id="titulo">
+                <label for="titulo">Título</label>
+                <input type="text" id="titulo" name="titulo" required>
 
-            <p>Descricao</p>
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" required></textarea>
 
-            <textarea id="descricao"></textarea>
+                <button type="submit">Salvar</button>
 
-           
-                <button>Salvar</button>
-           
+                <button type="reset">Limpar</button>
+            </form>
 
-            <h2>Lista de Tarefas</h2>
+        </section>
 
-            <table border="1">
-                <tr>
-                    <th>Titulo</th>
-                    <th>Descricao</th>
-                    <th>Acoes</th>
-                </tr>
-                <tbody id="taskList"></tbody>
+        <section id="lista" class="card" aria-labelledby="titulo-lista">
+
+            <h2 id="titulo-lista">Lista de Itens</h2>
+
+            <table aria-describedby="descricaoTabela">
+
+                <caption id="descricaoTabela">
+                    Lista de itens cadastrados no sistema
+                </caption>
+
+                <thead>
+                    <tr>
+                        <th scope="col">Título</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                </thead>
+
+                <tbody id="taskList">
+                </tbody>
+
             </table>
 
+        </section>
+
     </main>
+
     <footer class="footer">
-        <p>Site criado por <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>,
+
+        <p>
+            Site criado por
+            <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>,
             <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a>
-            e <a href="https://github.com/marco-wolff">Marco</a>
+            e <a href="https://github.com/marco-wolff" target="_blank">Marco</a>
         </p>
+
     </footer>
+
+    <script src="script.js"></script>
+
 </body>
 
 </html>
