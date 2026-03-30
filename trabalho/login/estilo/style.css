@@ -66,6 +66,10 @@ form > div.campo {
     margin: 5px 0px;
 }
 
+form > div.checkbox {
+    margin: 10px 0;
+}
+
 div.campo > span {
     color: #333;
     font-size: 2em;

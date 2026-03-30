@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
-
     <link rel="stylesheet" href="style/style.css">
-
     <title>Comercio.com</title>
 </head>
 
@@ -26,35 +24,31 @@
 
             <div class="usuario-logado" aria-label="Usuário autenticado">
                 <img src="imgs/image.png" class="avatar" alt="Foto do usuário">
-                <span>Kamilly</span>
+                <span id="nomeUsuario">Usuário</span>
             </div>
 
         </div>
 
         <nav aria-label="Menu principal">
             <ul class="menu">
-
                 <li>
                     <a href="#">Início</a>
                 </li>
-
                 <li>
                     <a href="#">Cadastrar</a>
                     <ul class="submenu">
                         <li><a href="#form">Inserir Item</a></li>
                     </ul>
                 </li>
-
                 <li>
                     <a href="#">Gerenciar</a>
                     <ul class="submenu">
-                        <li><a href="#">Alterar Item</a></li>
-                        <li><a href="#">Excluir Item</a></li>
-                        <li><a href="#">Mostrar Item</a></li>
+                        <li><a href="#alterar">Alterar Item</a></li>
+                        <li><a href="#excluir">Excluir Item</a></li>
+                        <li><a href="#mostrar">Mostrar Item</a></li>
                         <li><a href="#lista">Listar Todos</a></li>
                     </ul>
                 </li>
-
             </ul>
         </nav>
 
@@ -63,30 +57,24 @@
     <main class="main-content">
 
         <section id="form" class="card" aria-labelledby="titulo-form">
-
             <h2 id="titulo-form">Cadastrar Item</h2>
 
             <form id="taskForm">
-
                 <label for="titulo">Título</label>
                 <input type="text" id="titulo" name="titulo" required>
 
                 <label for="descricao">Descrição</label>
                 <textarea id="descricao" name="descricao" required></textarea>
 
-                <button type="submit">Salvar</button>
-
-                <button type="reset">Limpar</button>
+                <button type="submit" id="botaoSalvar">Salvar</button>
+                <button type="reset" id="botaoLimpar">Limpar</button>
             </form>
-
         </section>
 
         <section id="lista" class="card" aria-labelledby="titulo-lista">
-
             <h2 id="titulo-lista">Lista de Itens</h2>
 
             <table aria-describedby="descricaoTabela">
-
                 <caption id="descricaoTabela">
                     Lista de itens cadastrados no sistema
                 </caption>
@@ -99,24 +87,19 @@
                     </tr>
                 </thead>
 
-                <tbody id="taskList">
-                </tbody>
-
+                <tbody id="taskList"></tbody>
             </table>
-
         </section>
 
     </main>
 
     <footer class="footer">
-
         <p>
             Site criado por
             <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>,
             <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a>
             e <a href="https://github.com/marco-wolff" target="_blank">Marco</a>
         </p>
-
     </footer>
 
     <script src="script.js"></script>

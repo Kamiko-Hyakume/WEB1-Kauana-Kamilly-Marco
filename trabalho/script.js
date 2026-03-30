@@ -1,40 +1,123 @@
-const form = document.getElementById('taskForm');
-const lista = document.getElementById('taskList');
+const form = document.getElementById("taskForm");
+const lista = document.getElementById("taskList");
+const nomeUsuario = document.getElementById("nomeUsuario");
+const botaoSalvar = document.getElementById("botaoSalvar");
+const botaoLimpar = document.getElementById("botaoLimpar");
 
-form.addEventListener('submit', function(event) {
+let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+let editandoIndex = null;
+
+document.addEventListener("DOMContentLoaded", () => {
+    carregarUsuario();
+    renderizarTabela();
+});
+
+form.addEventListener("submit", function (event) {
     event.preventDefault();
 
-    const título = document.getElementById('titulo').value;
-    const descrição = document.getElementById('descricao').value;
+    const titulo = document.getElementById("titulo").value.trim();
+    const descricao = document.getElementById("descricao").value.trim();
 
-    const novalinha = document.createElement('tr');
+    if (!validarTexto(titulo, "Título")) return;
+    if (!validarTexto(descricao, "Descrição")) return;
 
-    novalinha.innerHTML = `
-        <td>${título}</td>
-        <td>${descrição}</td>
-          <td>
-            <button onclick="editarItem(this)">Editar</button>
-            <button onclick="excluirItem(this)">Excluir</button>
-        </td>
-    `;
+    if (editandoIndex !== null) {
+        tarefas[editandoIndex] = { titulo, descricao };
+        editandoIndex = null;
+        botaoSalvar.textContent = "Salvar";
+    } else {
+        tarefas.push({ titulo, descricao });
+    }
 
-    lista.appendChild(novalinha);
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    renderizarTabela();
     form.reset();
 });
 
-function excluirItem(botao) {
-    const linha = botao.parentElement.parentElement;
-    linha.remove();
+botaoLimpar.addEventListener("click", function () {
+    editandoIndex = null;
+    botaoSalvar.textContent = "Salvar";
+});
+
+function validarTexto(valor, nomeCampo) {
+    if (typeof valor !== "string") {
+        alert(`${nomeCampo} deve ser um texto.`);
+        return false;
+    }
+
+    if (valor === "") {
+        alert(`${nomeCampo} não pode ficar vazio.`);
+        return false;
+    }
+
+    // Não permite somente números
+    if (/^\d+$/.test(valor)) {
+        alert(`${nomeCampo} deve conter texto e não apenas números.`);
+        return false;
+    }
+
+    return true;
 }
 
-function editarItem(botao) {
-    const linha = botao.parentElement.parentElement;
+function carregarUsuario() {
+    const usuario = sessionStorage.getItem("usuarioLogado");
 
-    const título = linha.children[0].innerText;
-    const descrição = linha.children[1].innerText;
+    if (usuario && usuario.trim() !== "") {
+        nomeUsuario.textContent = usuario;
+    } else {
+        nomeUsuario.textContent = "Visitante";
+    }
+}
 
-    document.getElementById('titulo').value = título;
-    document.getElementById('descricao').value = descrição; 
+function renderizarTabela() {
+    lista.innerHTML = "";
 
-    linha.remove();
+    tarefas.forEach((tarefa, index) => {
+        const novaLinha = document.createElement("tr");
+
+        const tdTitulo = document.createElement("td");
+        tdTitulo.textContent = tarefa.titulo;
+
+        const tdDescricao = document.createElement("td");
+        tdDescricao.textContent = tarefa.descricao;
+
+        const tdAcoes = document.createElement("td");
+
+        const botaoEditar = document.createElement("button");
+        botaoEditar.type = "button";
+        botaoEditar.textContent = "Editar";
+        botaoEditar.addEventListener("click", function () {
+            editarItem(index);
+        });
+
+        const botaoExcluir = document.createElement("button");
+        botaoExcluir.type = "button";
+        botaoExcluir.textContent = "Excluir";
+        botaoExcluir.addEventListener("click", function () {
+            excluirItem(index);
+        });
+
+        tdAcoes.appendChild(botaoEditar);
+        tdAcoes.appendChild(botaoExcluir);
+
+        novaLinha.appendChild(tdTitulo);
+        novaLinha.appendChild(tdDescricao);
+        novaLinha.appendChild(tdAcoes);
+
+        lista.appendChild(novaLinha);
+    });
+}
+
+function excluirItem(index) {
+    tarefas.splice(index, 1);
+    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    renderizarTabela();
+}
+
+function editarItem(index) {
+    document.getElementById("titulo").value = tarefas[index].titulo;
+    document.getElementById("descricao").value = tarefas[index].descricao;
+
+    editandoIndex = index;
+    botaoSalvar.textContent = "Atualizar";
 }
