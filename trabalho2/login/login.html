@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="estilo/style.css">
+    <link rel="stylesheet" href="estilo/media-query.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+</head>
+
+<body>
+    <main>
+        <section id="login">
+            <div id="imagem"></div>
+
+            <div id="formulario">
+                <h1>Login</h1>
+
+                <form id="loginForm" autocomplete="on">
+                    <div class="campo-material">
+                        <input
+                            type="email"
+                            name="login"
+                            id="ilogin"
+                            placeholder=" "
+                            autocomplete="email"
+                            required
+                        >
+                        <label for="ilogin">Seu e-mail</label>
+                    </div>
+
+                    <div class="campo-material">
+                        <input
+                            type="password"
+                            name="senha"
+                            id="isenha"
+                            placeholder=" "
+                            autocomplete="current-password"
+                            required
+                            minlength="4"
+                            maxlength="8"
+                        >
+                        <label for="isenha">Sua senha</label>
+                    </div>
+
+                    <div class="checkbox-material">
+                        <input type="checkbox" id="lembrar">
+                        <label for="lembrar">Lembrar-me</label>
+                    </div>
+
+                    <input type="submit" value="Entrar" class="botao botao-primario">
+
+                    <a href="esquecisenha.html" class="botao botao-secundario">
+                        <span>Esqueci a senha</span>
+                        <span class="material-icons">mail</span>
+                    </a>
+
+                    <a href="cadastrar.html" class="botao botao-secundario">
+                        <span>Não tem uma conta? Cadastre-se</span>
+                        <span class="material-icons">person_add</span>
+                    </a>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
