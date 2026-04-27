@@ -7,7 +7,11 @@
     <meta name="description"
         content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
     <link rel="stylesheet" href="style/style.css">
-    <title>Comercio.com</title>  <!-- nome do site -->
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!-- Roboto - fonte padrão do Material Design -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Comercio.com</title>
 </head>
 
 <body>
@@ -15,38 +19,45 @@
     <header class="header">
 
         <div class="topo">
-
-            <a href="index.html" class="logo" aria-label="Ir para a página inicial"> <!-- Cria um link de recarregar a pagina na logo -->
-                <img src="imgs/image.png" alt="Logo do site Comercio.com"> <!-- imagem da logo -->
+            <a href="index.html" class="logo" aria-label="Ir para a página inicial">
+                <img src="imgs/image.png" alt="Logo do site Comercio.com">
             </a>
 
             <h1>Comercio.com</h1>
 
             <div class="usuario-logado" aria-label="Usuário autenticado">
-                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">  <!-- Mostra a foto do usuário -->
-                <span id="nomeUsuario">Usuário</span> <!-- Exibe o nome do usuário logado. -->
+                <div class="avatar-circle" id="avatarInicial">V</div>
+                <span id="nomeUsuario">Visitante</span>
             </div>
-
         </div>
 
         <nav aria-label="Menu principal">
-            <ul class="menu"> <!-- Cria uma lista -->
-                <li>  <!-- item da lista -->
-                    <a href="#">Início</a>
+            <ul class="menu">
+                <li>
+                    <a href="#">
+                        <span class="material-icons nav-icon">home</span>
+                        Início
+                    </a>
                 </li>
                 <li>
-                    <a href="#">Cadastrar</a>
+                    <a href="#">
+                        <span class="material-icons nav-icon">add_circle</span>
+                        Cadastrar
+                    </a>
                     <ul class="submenu">
-                        <li><a href="#form">Inserir Item</a></li>
+                        <li><a href="#form"><span class="material-icons">inventory_2</span> Inserir Item</a></li>
                     </ul>
                 </li>
                 <li>
-                    <a href="#">Gerenciar</a>
+                    <a href="#">
+                        <span class="material-icons nav-icon">manage_accounts</span>
+                        Gerenciar
+                    </a>
                     <ul class="submenu">
-                        <li><a href="#alterar">Alterar Item</a></li>
-                        <li><a href="#excluir">Excluir Item</a></li>
-                        <li><a href="#mostrar">Mostrar Item</a></li>
-                        <li><a href="#lista">Listar Todos</a></li>
+                        <li><a href="#lista"><span class="material-icons">edit</span> Alterar Item</a></li>
+                        <li><a href="#lista"><span class="material-icons">delete</span> Excluir Item</a></li>
+                        <li><a href="#lista"><span class="material-icons">visibility</span> Mostrar Item</a></li>
+                        <li><a href="#lista"><span class="material-icons">list</span> Listar Todos</a></li>
                     </ul>
                 </li>
             </ul>
@@ -56,42 +67,142 @@
 
     <main class="main-content">
 
-        <section id="form" class="card" aria-labelledby="titulo-form"> <!-- Cria uma seção para cadastrar item. -->
-            <h2 id="titulo-form">Cadastrar Item</h2> <!-- Título da seção de cadastro. -->
+        <!-- SEÇÃO DO FORMULÁRIO -->
+        <section id="form" class="card" aria-labelledby="titulo-form">
+            <h2 id="titulo-form">
+                <span class="material-icons section-icon">inventory_2</span>
+                Cadastrar Item
+            </h2>
 
-            <form id="taskForm">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" required>
+            <form id="taskForm" novalidate>
 
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" required></textarea>
+                <!-- Linha 1: Título + Código -->
+                <div class="form-row">
+                    <div class="field-group">
+                        <label class="mdc-label" for="titulo">Título *</label>
+                        <input class="mdc-input" type="text" id="titulo" name="titulo"
+                            placeholder="Nome do item" autocomplete="off" maxlength="100">
+                        <span class="helper-text" id="titulo-helper"></span>
+                    </div>
 
-                <button type="submit" id="botaoSalvar">Salvar</button>
-                <button type="reset" id="botaoLimpar">Limpar</button>
+                    <div class="field-group">
+                        <label class="mdc-label" for="codigo">Código *</label>
+                        <input class="mdc-input" type="text" id="codigo" name="codigo"
+                            placeholder="Ex: ITEM-001" autocomplete="off" maxlength="20">
+                        <span class="helper-text" id="codigo-helper"></span>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Categoria + Preço -->
+                <div class="form-row">
+                    <div class="field-group">
+                        <label class="mdc-label" for="categoria">Categoria *</label>
+                        <div class="select-wrapper">
+                            <select class="mdc-input mdc-select" id="categoria" name="categoria">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="eletronicos">Eletrônicos</option>
+                                <option value="roupas">Roupas e Acessórios</option>
+                                <option value="alimentos">Alimentos e Bebidas</option>
+                                <option value="moveis">Móveis e Decoração</option>
+                                <option value="livros">Livros e Mídia</option>
+                                <option value="esportes">Esportes e Lazer</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                            <span class="material-icons select-arrow">expand_more</span>
+                        </div>
+                        <span class="helper-text" id="categoria-helper"></span>
+                    </div>
+
+                    <div class="field-group">
+                        <label class="mdc-label" for="preco">Preço (R$) *</label>
+                        <input class="mdc-input" type="number" id="preco" name="preco"
+                            placeholder="0,00" min="0" step="0.01">
+                        <span class="helper-text" id="preco-helper"></span>
+                    </div>
+                </div>
+
+                <!-- Linha 3: Descrição (largura total) -->
+                <div class="field-group">
+                    <label class="mdc-label" for="descricao">Descrição *</label>
+                    <textarea class="mdc-input mdc-textarea" id="descricao" name="descricao"
+                        placeholder="Descreva o item com detalhes..." maxlength="500"></textarea>
+                    <span class="helper-text" id="descricao-helper">Máximo 500 caracteres</span>
+                </div>
+
+                <!-- Linha 4: Canais de venda (checkboxes) -->
+                <div class="field-group">
+                    <label class="mdc-label">Canais de venda disponíveis *</label>
+                    <div class="checkbox-row" id="canais-wrapper">
+                        <label class="mdc-checkbox">
+                            <input type="checkbox" name="canais" value="loja_fisica">
+                            <span class="checkmark"></span>
+                            <span>Loja Física</span>
+                        </label>
+                        <label class="mdc-checkbox">
+                            <input type="checkbox" name="canais" value="site">
+                            <span class="checkmark"></span>
+                            <span>Site</span>
+                        </label>
+                        <label class="mdc-checkbox">
+                            <input type="checkbox" name="canais" value="app">
+                            <span class="checkmark"></span>
+                            <span>Aplicativo</span>
+                        </label>
+                        <label class="mdc-checkbox">
+                            <input type="checkbox" name="canais" value="marketplace">
+                            <span class="checkmark"></span>
+                            <span>Marketplace</span>
+                        </label>
+                    </div>
+                    <span class="helper-text" id="canais-helper"></span>
+                </div>
+
+                <!-- Botões -->
+                <div class="button-row">
+                    <button type="reset" class="btn-outlined" id="botaoLimpar">
+                        <span class="material-icons">clear</span>
+                        Limpar
+                    </button>
+                    <button type="submit" class="btn-contained" id="botaoSalvar">
+                        <span class="material-icons">save</span>
+                        Salvar
+                    </button>
+                </div>
+
             </form>
         </section>
 
-        <section id="lista" class="card" aria-labelledby="titulo-lista"> <!-- Cria a seção que mostra todos os itens. -->
-            <h2 id="titulo-lista"> Lista de Itens </h2>
+        <!-- SEÇÃO DA TABELA -->
+        <section id="lista" class="card" aria-labelledby="titulo-lista">
+            <h2 id="titulo-lista">
+                <span class="material-icons section-icon">table_view</span>
+                Lista de Itens
+            </h2>
 
-            <table aria-describedby="descricaoTabela"> <!-- Cria a tabela que vai mostrar os itens. -->
-                <caption id="descricaoTabela">
-                    Lista de itens cadastrados no sistema
-                </caption>
+            <table aria-describedby="descricaoTabela">
+                <caption id="descricaoTabela">Lista de itens cadastrados no sistema</caption>
 
                 <thead>
-                    <tr> <!-- Cria uma linha da tabela. -->
+                    <tr>
                         <th scope="col">Título</th>
-                        <th scope="col">Descrição</th>
+                        <th scope="col">Código</th>
+                        <th scope="col">Categoria</th>
+                        <th scope="col">Preço</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
 
-                <tbody id="taskList"></tbody> <!-- Traz o que salvou -->
+                <tbody id="taskList"></tbody>
             </table>
         </section>
 
     </main>
+
+    <!-- Snackbar de feedback -->
+    <div class="snackbar" id="snackbar" role="status" aria-live="polite">
+        <span class="material-icons" id="snackbar-icon">check_circle</span>
+        <span id="snackbar-msg">Mensagem</span>
+    </div>
 
     <footer class="footer">
         <p>
