@@ -12,61 +12,69 @@
 
 <body>
     <main>
-        <section id="login">
-            <div id="imagem"></div>
+        <section class="login-card">
+            <div class="login-hero"></div>
 
-            <div id="formulario">
+            <div class="login-body">
                 <h1>Login</h1>
+                <p>Acesse sua conta para continuar.</p>
 
                 <form id="loginForm" autocomplete="on">
-                    <div class="campo-material">
-                        <input
-                            type="email"
-                            name="login"
-                            id="ilogin"
-                            placeholder=" "
-                            autocomplete="email"
-                            required
-                        >
-                        <label for="ilogin">Seu e-mail</label>
-                    </div>
+                    <fieldset>
+                        <legend class="sr-only">Entrar na conta</legend>
 
-                    <div class="campo-material">
-                        <input
-                            type="password"
-                            name="senha"
-                            id="isenha"
-                            placeholder=" "
-                            autocomplete="current-password"
-                            required
-                            minlength="4"
-                            maxlength="8"
-                        >
-                        <label for="isenha">Sua senha</label>
-                    </div>
+                        <div class="campo-material">
+                            <input
+                                type="email"
+                                name="email"
+                                id="email"
+                                placeholder=" "
+                                autocomplete="email"
+                                required
+                            >
+                            <label for="email">Seu e-mail</label>
+                        </div>
 
-                    <div class="checkbox-material">
-                        <input type="checkbox" id="lembrar">
-                        <label for="lembrar">Lembrar-me</label>
-                    </div>
+                        <div class="campo-material">
+                            <input
+                                type="password"
+                                name="password"
+                                id="password"
+                                placeholder=" "
+                                autocomplete="current-password"
+                                required
+                                minlength="4"
+                                maxlength="8"
+                            >
+                            <label for="password">Sua senha</label>
+                        </div>
 
-                    <input type="submit" value="Entrar" class="botao botao-primario">
+                        <div class="checkbox-material">
+                            <input type="checkbox" id="lembrar">
+                            <label for="lembrar">Lembrar-me</label>
+                        </div>
 
-                    <a href="esquecisenha.html" class="botao botao-secundario">
-                        <span>Esqueci a senha</span>
-                        <span class="material-icons">mail</span>
-                    </a>
+                        <button type="submit" class="botao botao-primario">
+                            <span>Entrar</span>
+                        </button>
 
-                    <a href="cadastrar.html" class="botao botao-secundario">
-                        <span>Não tem uma conta? Cadastre-se</span>
-                        <span class="material-icons">person_add</span>
-                    </a>
+                        <a href="esquecisenha.html" class="botao botao-secundario">
+                            <span>Esqueci a senha</span>
+                            <span class="material-icons" aria-hidden="true">mail</span>
+                        </a>
+
+                        <a href="cadastrar.html" class="botao botao-secundario">
+                            <span>Não tem uma conta? Cadastre-se</span>
+                            <span class="material-icons" aria-hidden="true">person_add</span>
+                        </a>
+                    </fieldset>
                 </form>
             </div>
         </section>
     </main>
 
     <script src="script.js"></script>
+    
 </body>
 
 </html>
