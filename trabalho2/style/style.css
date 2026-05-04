@@ -143,17 +143,120 @@ label{
     font-weight:600;
 }
 
-input,
-textarea{
-    padding:10px;
-    border-radius:6px;
+.field-input{
+    width:100%;
+    padding:12px 14px;
     border:1px solid var(--cor-borda);
+    border-radius:6px;
+    font-size:14px;
+    font-family:inherit;
+    background:white;
+    outline:none;
+    transition:border-color 0.2s;
+    color:#212121;
+}
+
+.field-input:focus{
+    border-color:var(--cor-destaque);
+    border-width:2px;
+}
+
+.field-textarea{
+    resize:vertical;
+    min-height:80px;
+}
+
+.field-select{
+    appearance:none;
+    -webkit-appearance:none;
+
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23757575' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+
+    background-repeat:no-repeat;
+    background-position:right 12px center;
+
+    padding-right:36px;
+    cursor:pointer;
+
+    position:relative;
+    z-index:0;
+}
+
+.field-label{
+    position:absolute;
+    top:50%;
+    left:12px;
+    transform:translateY(-50%);
+    font-size:14px;
+    color:#9e9e9e;
+    pointer-events:none;
+    background:var(--cor-card);
+    padding:0 4px;
+    transition:
+        top 0.18s ease,
+        font-size 0.18s ease,
+        color 0.18s ease;
+    line-height:1;
+    z-index:1;
+}
+
+.field-group:has(.field-textarea) .field-label{
+    top:16px;
+    transform:none;
+}
+
+.field-group:focus-within .field-label{
+    top:-6px;
+    transform:none;
+    font-size:11px;
+    color:var(--cor-destaque);
+}
+
+.field-group:has(.field-select):focus-within .field-label{
+    top:-6px;
+    transform:none;
+    font-size:11px;
+    color:var(--cor-destaque);
+}
+
+.field-group.preenchido .field-label{
+    top:-6px;
+    transform:none;
+    font-size:11px;
+    color:#757575;
+}
+
+.checkbox-section{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+}
+
+.checkbox-section__label{
+    font-size:12px;
+    font-weight:bold;
+    color:#757575;
+}
+
+.checkbox-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
+
+.checkbox-item{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    cursor:pointer;
     font-size:14px;
 }
 
-textarea{
-    resize:none;
-    height:80px;
+.checkbox-item input[type="checkbox"]{
+    width:16px;
+    height:16px;
+    accent-color:var(--cor-destaque);
+    cursor:pointer;
 }
 
 button{
@@ -308,6 +411,69 @@ button:hover{
 /* RESPONSIVO */
 @media (max-width:768px){
 
+    border-radius:999px;
+
+    font-size:14px;
+    font-weight:600;
+    font-family:inherit;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    cursor:pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        box-shadow 0.2s ease,
+        transform 0.15s ease;
+}
+
+.btn-filled{
+    background:var(--cor-destaque);
+    color:white;
+    border:none;
+}
+
+.btn-filled:hover{
+    background:#16a085;
+    box-shadow:0 2px 8px rgba(0,0,0,0.15);
+}
+
+.btn-filled:active{
+    transform:scale(0.98);
+}
+
+.btn-outlined{
+    background:transparent;
+    color:var(--cor-destaque);
+
+    border:1px solid var(--cor-destaque);
+}
+
+.btn-outlined:hover{
+    background:rgba(26,188,156,0.08);
+}
+
+.btn-outlined:active{
+    transform:scale(0.98);
+}
+
+@media (max-width:600px){
+
+    .button-group{
+        flex-direction:column-reverse;
+        align-items:stretch;
+    }
+
+    .btn{
+        width:100%;
+    }
+}
+
+@media (max-width:768px){
     .topo{
         flex-direction:column;
         gap:10px;
