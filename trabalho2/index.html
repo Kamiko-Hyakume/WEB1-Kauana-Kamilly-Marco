@@ -7,7 +7,7 @@
     <meta name="description"
         content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
     <link rel="stylesheet" href="style/style.css">
-    <title>Comercio.com</title>  <!-- nome do site -->
+    <title>Comercio.com</title>
 </head>
 
 <body>
@@ -15,23 +15,21 @@
     <header class="header">
 
         <div class="topo">
-
-            <a href="index.html" class="logo" aria-label="Ir para a página inicial"> <!-- Cria um link de recarregar a pagina na logo -->
-                <img src="imgs/image.png" alt="Logo do site Comercio.com"> <!-- imagem da logo -->
+            <a href="index.html" class="logo" aria-label="Ir para a página inicial">
+                <img src="imgs/image.png" alt="Logo do site Comercio.com">
             </a>
 
             <h1>Comercio.com</h1>
 
             <div class="usuario-logado" aria-label="Usuário autenticado">
-                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">  <!-- Mostra a foto do usuário -->
-                <span id="nomeUsuario">Usuário</span> <!-- Exibe o nome do usuário logado. -->
+                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">
+                <span id="nomeUsuario">Usuário</span>
             </div>
-
         </div>
 
         <nav aria-label="Menu principal">
-            <ul class="menu"> <!-- Cria uma lista -->
-                <li>  <!-- item da lista -->
+            <ul class="menu">
+                <li>
                     <a href="#">Início</a>
                 </li>
                 <li>
@@ -56,38 +54,108 @@
 
     <main class="main-content">
 
-        <section id="form" class="card" aria-labelledby="titulo-form"> <!-- Cria uma seção para cadastrar item. -->
-            <h2 id="titulo-form">Cadastrar Item</h2> <!-- Título da seção de cadastro. -->
+        <section id="form" class="card" aria-labelledby="titulo-form">
+            <h2 id="titulo-form">Cadastrar Item</h2>
 
             <form id="taskForm">
-                <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" required>
 
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" required></textarea>
+                <div class="field-group">
+                    <input type="text" class="field-input" id="titulo" name="titulo"
+                           autocomplete="off" maxlength="100" required>
+                    <label class="field-label" for="titulo">Título *</label>
+                </div>
 
-                <button type="submit" id="botaoSalvar">Salvar</button>
-                <button type="reset" id="botaoLimpar">Limpar</button>
+                <div class="field-group">
+                    <input type="text" class="field-input" id="codigo" name="codigo"
+                           autocomplete="off" maxlength="20" required>
+                    <label class="field-label" for="codigo">Código *</label>
+                </div>
+
+                <div class="field-group">
+                    <select class="field-input field-select" id="categoria" name="categoria" required>
+                        <option value="" hidden></option>
+                        <option value="eletronicos">Eletrônicos</option>
+                        <option value="roupas">Roupas e Acessórios</option>
+                        <option value="alimentos">Alimentos e Bebidas</option>
+                        <option value="moveis">Móveis e Decoração</option>
+                        <option value="livros">Livros e Mídia</option>
+                        <option value="esportes">Esportes e Lazer</option>
+                        <option value="outros">Outros</option>
+                    </select>
+                    <label class="field-label" for="categoria">Categoria *</label>
+                </div>
+
+                <div class="field-group">
+                    <input type="number" class="field-input" id="preco" name="preco"
+                           min="0.01" step="0.01" autocomplete="off">
+                    <label class="field-label" for="preco">Preço (R$) *</label>
+                </div>
+
+                <!-- Descrição -->
+                <div class="field-group">
+                    <textarea class="field-input field-textarea" id="descricao"
+                              name="descricao" maxlength="500"></textarea>
+                    <label class="field-label" for="descricao">Descrição *</label>
+                </div>
+
+                <div class="checkbox-section">
+                    <span class="checkbox-section__label">Canais de venda disponíveis</span>
+                    <div class="checkbox-group">
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="canais" value="loja_fisica">
+                            <span>Loja Física</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="canais" value="site">
+                            <span>Site</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="canais" value="app">
+                            <span>Aplicativo</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" name="canais" value="marketplace">
+                            <span>Marketplace</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="button-group">
+
+                <button
+                    type="reset"
+                    id="botaoLimpar"
+                    class="btn btn-outlined">
+                    Limpar
+                </button>
+
+                <button
+                    type="submit"
+                    id="botaoSalvar"
+                    class="btn btn-filled">
+                    Salvar
+                </button>
+
+            </div>
+
             </form>
         </section>
 
-        <section id="lista" class="card" aria-labelledby="titulo-lista"> <!-- Cria a seção que mostra todos os itens. -->
-            <h2 id="titulo-lista"> Lista de Itens </h2>
+        <section id="lista" class="card" aria-labelledby="titulo-lista">
+            <h2 id="titulo-lista">Lista de Itens</h2>
 
-            <table aria-describedby="descricaoTabela"> <!-- Cria a tabela que vai mostrar os itens. -->
+            <table aria-describedby="descricaoTabela">
                 <caption id="descricaoTabela">
                     Lista de itens cadastrados no sistema
                 </caption>
-
                 <thead>
-                    <tr> <!-- Cria uma linha da tabela. -->
+                    <tr>
                         <th scope="col">Título</th>
                         <th scope="col">Descrição</th>
                         <th scope="col">Ações</th>
                     </tr>
                 </thead>
-
-                <tbody id="taskList"></tbody> <!-- Traz o que salvou -->
+                <tbody id="taskList"></tbody>
             </table>
         </section>
 
@@ -105,5 +173,4 @@
     <script src="script.js"></script>
 
 </body>
-
 </html>

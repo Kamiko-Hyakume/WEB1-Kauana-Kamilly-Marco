@@ -3,7 +3,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const campoLogin = document.getElementById("email");
     const campoSenha = document.getElementById("password");
     const lembrar = document.getElementById("lembrar");
-
     const lembrarSalvo = localStorage.getItem("lembrarSenha") === "true";
     const emailSalvo = localStorage.getItem("emailSalvo") || "";
     const senhaSalva = localStorage.getItem("senhaSalva") || "";
