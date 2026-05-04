@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description"
         content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
+
     <link rel="stylesheet" href="style/style.css">
-    <title>Comercio.com</title>  <!-- nome do site -->
+
+    <title>Comercio.com</title>
 </head>
 
 <body>
@@ -16,36 +18,33 @@
 
         <div class="topo">
 
-            <a href="index.html" class="logo" aria-label="Ir para a página inicial"> <!-- Cria um link de recarregar a pagina na logo -->
-                <img src="imgs/image.png" alt="Logo do site Comercio.com"> <!-- imagem da logo -->
+            <a href="index.html" class="logo">
+                <img src="imgs/image.png" alt="Logo do site">
             </a>
 
             <h1>Comercio.com</h1>
 
-            <div class="usuario-logado" aria-label="Usuário autenticado">
-                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">  <!-- Mostra a foto do usuário -->
-                <span id="nomeUsuario">Usuário</span> <!-- Exibe o nome do usuário logado. -->
+            <div class="usuario-logado">
+                <img src="imgs/image.png" class="avatar" alt="Foto do usuário">
+                <span id="nomeUsuario">Usuário</span>
             </div>
 
         </div>
 
-        <nav aria-label="Menu principal">
-            <ul class="menu"> <!-- Cria uma lista -->
-                <li>  <!-- item da lista -->
-                    <a href="#">Início</a>
-                </li>
+        <nav>
+            <ul class="menu">
+                <li><a href="#">Início</a></li>
+
                 <li>
                     <a href="#">Cadastrar</a>
                     <ul class="submenu">
                         <li><a href="#form">Inserir Item</a></li>
                     </ul>
                 </li>
+
                 <li>
                     <a href="#">Gerenciar</a>
                     <ul class="submenu">
-                        <li><a href="#alterar">Alterar Item</a></li>
-                        <li><a href="#excluir">Excluir Item</a></li>
-                        <li><a href="#mostrar">Mostrar Item</a></li>
                         <li><a href="#lista">Listar Todos</a></li>
                     </ul>
                 </li>
@@ -56,39 +55,66 @@
 
     <main class="main-content">
 
-        <section id="form" class="card" aria-labelledby="titulo-form"> <!-- Cria uma seção para cadastrar item. -->
-            <h2 id="titulo-form">Cadastrar Item</h2> <!-- Título da seção de cadastro. -->
+        <!-- FORM -->
+        <section id="form" class="card">
+            <h2>Cadastrar Item</h2>
 
             <form id="taskForm">
                 <label for="titulo">Título</label>
-                <input type="text" id="titulo" name="titulo" required>
+                <input type="text" id="titulo" required>
 
                 <label for="descricao">Descrição</label>
-                <textarea id="descricao" name="descricao" required></textarea>
+                <textarea id="descricao" required></textarea>
 
-                <button type="submit" id="botaoSalvar">Salvar</button>
-                <button type="reset" id="botaoLimpar">Limpar</button>
+                <button type="submit">Salvar</button>
+                <button type="reset">Limpar</button>
             </form>
         </section>
 
-        <section id="lista" class="card" aria-labelledby="titulo-lista"> <!-- Cria a seção que mostra todos os itens. -->
-            <h2 id="titulo-lista"> Lista de Itens </h2>
+        <!-- DATA TABLE -->
+        <section id="lista" class="card material-table">
 
-            <table aria-describedby="descricaoTabela"> <!-- Cria a tabela que vai mostrar os itens. -->
-                <caption id="descricaoTabela">
-                    Lista de itens cadastrados no sistema
-                </caption>
+            <!-- HEADER -->
+            <div class="table-header">
+                <div>
+                    <h2>Lista de Itens</h2>
+                    <p class="table-subtitle">Itens cadastrados</p>
+                </div>
 
-                <thead>
-                    <tr> <!-- Cria uma linha da tabela. -->
-                        <th scope="col">Título</th>
-                        <th scope="col">Descrição</th>
-                        <th scope="col">Ações</th>
-                    </tr>
-                </thead>
+                <input type="text" id="searchInput" placeholder="Pesquisar..." class="search-field">
+            </div>
 
-                <tbody id="taskList"></tbody> <!-- Traz o que salvou -->
-            </table>
+            <!-- TABLE -->
+            <div class="table-container">
+                <table class="data-table">
+
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox">
+                            </th>
+                            <th>Título</th>
+                            <th>Descrição</th>
+                            <th>Data</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="taskList"></tbody>
+
+                </table>
+            </div>
+
+            <!-- FOOTER -->
+            <div class="table-footer">
+                <span id="paginationInfo">0 itens</span>
+
+                <div class="pagination">
+                    <button id="prevPage">&lt;</button>
+                    <button id="nextPage">&gt;</button>
+                </div>
+            </div>
+
         </section>
 
     </main>
