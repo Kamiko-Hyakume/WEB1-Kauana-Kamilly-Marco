@@ -29,10 +29,26 @@ function iniciarFloatingLabels() {
 }
 
 function atualizarLabel(input) {
+
     var group = input.closest(".field-group");
+
     if (!group) return;
 
-    var temValor = input.value.trim() !== "";
+    if (input.tagName === "SELECT") {
+
+        if (input.selectedIndex === 0) {
+            group.classList.remove("preenchido");
+        } else {
+            group.classList.add("preenchido");
+        }
+
+        return;
+    }
+
+    var temValor =
+        input.value !== "" &&
+        input.value !== null;
+
     if (temValor) {
         group.classList.add("preenchido");
     } else {

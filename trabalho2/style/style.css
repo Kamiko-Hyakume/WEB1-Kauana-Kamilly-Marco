@@ -139,6 +139,9 @@ form{
     gap:12px;
 }
 
+.field-group{
+    position:relative;
+    margin-top:6px;
 label{
     font-weight:600;
 }
@@ -157,8 +160,8 @@ label{
 }
 
 .field-input:focus{
-    border-color:var(--cor-destaque);
-    border-width:2px;
+    border:2px solid var(--cor-destaque);
+    padding:11px 13px;
 }
 
 .field-textarea{
@@ -166,22 +169,41 @@ label{
     min-height:80px;
 }
 
+/* ─── SELECT ─── */
 .field-select{
     appearance:none;
     -webkit-appearance:none;
 
+    width:100%;
+    height:56px;
+
+    /* padding-top maior para empurrar o texto selecionado para baixo,
+       dando espaço visual para o label flutuar por cima */
+    padding:18px 40px 6px 14px;
+
+    background-color:white;
+
     background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23757575' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
-
     background-repeat:no-repeat;
-    background-position:right 12px center;
+    background-position:right 16px center;
 
-    padding-right:36px;
+    border:1px solid var(--cor-borda);
+    border-radius:6px;
+
+    font-size:14px;
+    font-family:inherit;
+
     cursor:pointer;
 
     position:relative;
-    z-index:0;
+    z-index:2;
 }
 
+.field-select:focus{
+    border:2px solid var(--cor-destaque);
+    padding:18px 39px 6px 13px;
+}
+/* ─── FLOATING LABEL (base) ─── */
 .field-label{
     position:absolute;
     top:50%;
@@ -197,14 +219,16 @@ label{
         font-size 0.18s ease,
         color 0.18s ease;
     line-height:1;
-    z-index:1;
+    z-index:3; /* acima do select */
 }
 
+/* Textarea: label parte do topo, não do meio */
 .field-group:has(.field-textarea) .field-label{
     top:16px;
     transform:none;
 }
 
+/* Label sobe ao focar qualquer campo */
 .field-group:focus-within .field-label{
     top:-6px;
     transform:none;
@@ -212,13 +236,7 @@ label{
     color:var(--cor-destaque);
 }
 
-.field-group:has(.field-select):focus-within .field-label{
-    top:-6px;
-    transform:none;
-    font-size:11px;
-    color:var(--cor-destaque);
-}
-
+/* Label sobe quando o campo está preenchido */
 .field-group.preenchido .field-label{
     top:-6px;
     transform:none;
@@ -226,6 +244,16 @@ label{
     color:#757575;
 }
 
+/* ─── CORREÇÃO DO SELECT ───
+   O label começa no meio do campo (igual inputs de texto)
+   e sobe ao focar ou ao ter valor selecionado.
+   O z-index 3 garante que fique visível sobre o select. */
+.field-group:has(.field-select) .field-label{
+    z-index:3;
+    /* herda o comportamento padrão: top 50%, centralizado */
+}
+
+/* ─── CHECKBOXES ─── */
 .checkbox-section{
     display:flex;
     flex-direction:column;
@@ -241,15 +269,20 @@ label{
 .checkbox-group{
     display:flex;
     flex-direction:column;
-    gap:6px;
+    gap:10px;
 }
 
 .checkbox-item{
     display:flex;
     align-items:center;
     gap:8px;
-    cursor:pointer;
+    width:fit-content;
+}
+
+.checkbox-item label{
     font-size:14px;
+    cursor:pointer;
+    user-select:none;
 }
 
 .checkbox-item input[type="checkbox"]{
@@ -259,6 +292,7 @@ label{
     cursor:pointer;
 }
 
+/* ─── BOTÕES ─── */
 button{
     padding:10px;
     background:var(--cor-destaque);
@@ -274,6 +308,8 @@ button:hover{
     background:#16a085;
 }
 
+/* ─── TABELA ─── */
+table{
 /* ========================= */
 /* 🚀 MATERIAL DATA TABLE */
 /* ========================= */
@@ -387,6 +423,7 @@ button:hover{
     color:var(--cor-texto-secundario);
 }
 
+/* ─── FOOTER ─── */
 .pagination button{
     background:none;
     border:none;
@@ -401,6 +438,7 @@ button:hover{
     color:white;
     text-align:center;
     padding:15px;
+    margin-top:auto;
 }
 
 .footer a{
@@ -408,6 +446,21 @@ button:hover{
     text-decoration:none;
 }
 
+/* ─── BUTTON GROUP ─── */
+.button-group{
+    display:flex;
+    justify-content:flex-end;
+    align-items:center;
+    gap:12px;
+    margin-top:10px;
+    flex-wrap:wrap;
+}
+
+.btn{
+    min-width:120px;
+    height:40px;
+
+    padding:0 24px;
 /* RESPONSIVO */
 @media (max-width:768px){
 
@@ -449,7 +502,6 @@ button:hover{
 .btn-outlined{
     background:transparent;
     color:var(--cor-destaque);
-
     border:1px solid var(--cor-destaque);
 }
 
@@ -461,8 +513,8 @@ button:hover{
     transform:scale(0.98);
 }
 
+/* ─── RESPONSIVO ─── */
 @media (max-width:600px){
-
     .button-group{
         flex-direction:column-reverse;
         align-items:stretch;

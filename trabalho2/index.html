@@ -62,27 +62,115 @@
                 <label for="titulo">Título</label>
                 <input type="text" id="titulo" required>
 
-                <label for="descricao">Descrição</label>
-                <textarea id="descricao" required></textarea>
+                <div class="field-group">
+                    <input type="text" class="field-input" id="titulo" name="titulo" autocomplete="off" maxlength="100"
+                        required>
+                    <label class="field-label" for="titulo">Título *</label>
+                </div>
 
-                <button type="submit">Salvar</button>
-                <button type="reset">Limpar</button>
-            </form>
-        </section>
+                <div class="field-group">
+                    <input type="text" class="field-input" id="codigo" name="codigo" autocomplete="off" maxlength="20"
+                        required>
+                    <label class="field-label" for="codigo">Código *</label>
+                </div>
 
-        <!-- DATA TABLE -->
-        <section id="lista" class="card material-table">
+                <div class="field-group">
+                    <select class="field-input field-select" id="categoria" name="categoria" required>
+                        <!-- Removido o option placeholder para evitar texto duplicado com o floating label -->
+                        <option value="" selected disabled hidden></option>
 
-            <!-- HEADER -->
-            <div class="table-header">
-                <div>
-                    <h2>Lista de Itens</h2>
-                    <p class="table-subtitle">Itens cadastrados</p>
+                        <option value="eletronicos">
+                            Eletrônicos
+                        </option>
+
+                        <option value="roupas">
+                            Roupas e Acessórios
+                        </option>
+
+                        <option value="alimentos">
+                            Alimentos e Bebidas
+                        </option>
+
+                        <option value="moveis">
+                            Móveis e Decoração
+                        </option>
+
+                        <option value="livros">
+                            Livros e Mídia
+                        </option>
+
+                        <option value="esportes">
+                            Esportes e Lazer
+                        </option>
+
+                        <option value="outros">
+                            Outros
+                        </option>
+
+                    </select>
+
+                    <label class="field-label" for="categoria">
+                        Categoria *
+                    </label>
+
+                </div>
+
+                <div class="field-group">
+                    <input type="number" class="field-input" id="preco" name="preco" min="0.01" step="0.01"
+                        autocomplete="off">
+                    <label class="field-label" for="preco">Preço (R$) *</label>
+                </div>
+
+                <div class="field-group">
+                    <textarea class="field-input field-textarea" id="descricao" name="descricao"
+                        maxlength="500"></textarea>
+                    <label class="field-label" for="descricao">Descrição *</label>
+                </div>
+
+                <div class="checkbox-section">
+
+                    <span class="checkbox-section__label">
+                        Canais de venda disponíveis
+                    </span>
+
+                    <div class="checkbox-group">
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="loja_fisica" name="canais" value="loja_fisica">
+                            <label for="loja_fisica">Loja Física</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="site" name="canais" value="site">
+                            <label for="site">Site</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="app" name="canais" value="app">
+                            <label for="app">Aplicativo</label>
+                        </div>
+
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="marketplace" name="canais" value="marketplace">
+                            <label for="marketplace">Marketplace</label>
+                        </div>
+
+                    </div>
+
                 </div>
 
                 <input type="text" id="searchInput" placeholder="Pesquisar..." class="search-field">
             </div>
 
+                    <button type="reset" id="botaoLimpar" class="btn btn-outlined">
+                        Limpar
+                    </button>
+
+                    <button type="submit" id="botaoSalvar" class="btn btn-filled">
+                        Salvar
+                    </button>
+
+                </div>
             <!-- TABLE -->
             <div class="table-container">
                 <table class="data-table">
@@ -130,4 +218,5 @@
     <script src="script.js"></script>
 
 </body>
+
 </html>
