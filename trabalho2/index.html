@@ -168,36 +168,90 @@
                     </button>
 
                 </div>
-                <!-- TABLE -->
-                <div class="table-container">
-                    <table class="data-table">
+               <!-- DataTable -->
+<section class="material-table">
 
-                        <thead>
-                            <tr>
-                                <th><input type="checkbox">
-                                </th>
-                                <th>Título</th>
-                                <th>Descrição</th>
-                                <th>Data</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
+    <div class="table-header">
 
-                        <tbody id="taskList"></tbody>
+        <div>
+            <h3>Lista de Produtos</h3>
+            <span class="table-subtitle">
+                Gerencie os itens cadastrados
+            </span>
+        </div>
 
-                    </table>
-                </div>
+        <input
+            type="text"
+            id="searchInput"
+            class="search-field"
+            placeholder="Pesquisar item..."
+        >
 
-                <!-- FOOTER -->
-                <div class="table-footer">
-                    <span id="paginationInfo">0 itens</span>
+    </div>
 
-                    <div class="pagination">
-                        <button id="prevPage">&lt;</button>
-                        <button id="nextPage">&gt;</button>
-                    </div>
-                </div>
+    <div class="table-container">
+
+        <table class="data-table">
+
+            <thead>
+                <tr>
+
+                    <th>
+                        <input type="checkbox" id="checkAll">
+                    </th>
+
+                    <th data-sort="titulo">Título</th>
+
+                    <th data-sort="codigo">Código</th>
+
+                    <th data-sort="categoria">Categoria</th>
+
+                    <th data-sort="preco">Preço</th>
+
+                    <th>Canais</th>
+
+                    <th>Descrição</th>
+
+                    <th>Status</th>
+
+                    <th data-sort="dataCadastro">Data</th>
+
+                    <th>Ações</th>
+
+                </tr>
+            </thead>
+
+            <tbody id="taskList"></tbody>
+
+        </table>
+
+    </div>
+
+    <div class="table-footer">
+
+        <span id="paginationInfo">
+            0 itens
+        </span>
+
+        <div class="pagination">
+
+            <button id="prevPage">
+                ◀
+            </button>
+
+            <span id="currentPage">
+                1
+            </span>
+
+            <button id="nextPage">
+                ▶
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
 
         </section>
 

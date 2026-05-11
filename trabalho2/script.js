@@ -1,187 +1,335 @@
 const form = document.getElementById("taskForm");
 const lista = document.getElementById("taskList");
-const nomeUsuario = document.getElementById("nomeUsuario");
+
+const searchInput = document.getElementById("searchInput");
+
+const paginationInfo = document.getElementById("paginationInfo");
+const currentPageText = document.getElementById("currentPage");
+
+const prevPage = document.getElementById("prevPage");
+const nextPage = document.getElementById("nextPage");
+
 const botaoSalvar = document.getElementById("botaoSalvar");
-const botaoLimpar = document.getElementById("botaoLimpar");
 
 let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
+
 let editandoIndex = null;
 
+let paginaAtual = 1;
+
+const itensPorPagina = 5;
+
+let colunaOrdenacao = null;
+
+let ordemAscendente = true;
+
 document.addEventListener("DOMContentLoaded", () => {
-    carregarUsuario();
     renderizarTabela();
-    iniciarFloatingLabels();
 });
 
-function iniciarFloatingLabels() {
-    document.querySelectorAll(".field-group .field-input").forEach(function(input) {
-        atualizarLabel(input);
-
-        input.addEventListener("input",  function() { atualizarLabel(input); });
-        input.addEventListener("change", function() { atualizarLabel(input); });
-        input.addEventListener("focus",  function() { atualizarLabel(input); });
-    });
-}
-
-function atualizarLabel(input) {
-
-    var group = input.closest(".field-group");
-
-    if (!group) return;
-
-    if (input.tagName === "SELECT") {
-
-        if (input.selectedIndex === 0) {
-            group.classList.remove("preenchido");
-        } else {
-            group.classList.add("preenchido");
-        }
-
-        return;
-    }
-
-    var temValor =
-        input.value !== "" &&
-        input.value !== null;
-
-    if (temValor) {
-        group.classList.add("preenchido");
-    } else {
-        group.classList.remove("preenchido");
-    }
-}
-
-function atualizarTodosLabels() {
-    document.querySelectorAll(".field-group .field-input").forEach(atualizarLabel);
-}
-
 form.addEventListener("submit", function (event) {
+
     event.preventDefault();
 
-    const titulo    = document.getElementById("titulo").value.trim();
-    const codigo    = document.getElementById("codigo").value.trim();
-    const categoria = document.getElementById("categoria").value;
-    const preco     = document.getElementById("preco").value.trim();
-    const descricao = document.getElementById("descricao").value.trim();
-    const canais    = [...document.querySelectorAll("input[name='canais']:checked")].map(c => c.value);
+    const titulo =
+        document.getElementById("titulo").value.trim();
 
-    if (!validarTexto(titulo, "Título")) return;
-    if (!validarTexto(descricao, "Descrição")) return;
+    const codigo =
+        document.getElementById("codigo").value.trim();
 
-    if (preco !== "" && (isNaN(parseFloat(preco)) || parseFloat(preco) <= 0)) {
-        alert("Preço deve ser um valor maior que zero.");
-        return;
-    }
+    const categoria =
+        document.getElementById("categoria").value;
 
-    const item = { titulo, codigo, categoria, preco, descricao, canais };
+    const preco =
+        document.getElementById("preco").value;
+
+    const descricao =
+        document.getElementById("descricao").value.trim();
+
+    const canais = [
+        ...document.querySelectorAll(
+            "input[name='canais']:checked"
+        )
+    ].map(c => c.value);
+
+    const item = {
+
+        titulo,
+        codigo,
+        categoria,
+        preco,
+        descricao,
+        canais,
+
+        status: "ativo",
+
+        dataCadastro:
+            editandoIndex !== null
+            ? tarefas[editandoIndex].dataCadastro
+            : new Date().toLocaleDateString("pt-BR")
+    };
 
     if (editandoIndex !== null) {
+
         tarefas[editandoIndex] = item;
+
         editandoIndex = null;
+    
+        console.log("Item atualizado:", item);
+
         botaoSalvar.textContent = "Salvar";
-    } else {
+
+    }  else {
         tarefas.push(item);
     }
 
-    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+    salvarDados();
+
     renderizarTabela();
+
     form.reset();
-
-    setTimeout(atualizarTodosLabels, 0);
+    document
+    .querySelectorAll("input[name='canais']")
+    .forEach(c => c.checked = false);
 });
 
-botaoLimpar.addEventListener("click", function () {
-    editandoIndex = null;
-    botaoSalvar.textContent = "Salvar";
-    setTimeout(atualizarTodosLabels, 0);
-});
+function salvarDados() {
 
-function validarTexto(valor, nomeCampo) {
-    if (typeof valor !== "string") {
-        alert(nomeCampo + " deve ser um texto.");
-        return false;
-    }
-    if (valor === "") {
-        alert(nomeCampo + " não pode ficar vazio.");
-        return false;
-    }
-    if (/^\d+$/.test(valor)) {
-        alert(nomeCampo + " deve conter texto e não apenas números.");
-        return false;
-    }
-    return true;
-}
-
-function carregarUsuario() {
-    const usuario = sessionStorage.getItem("usuarioLogado");
-    if (usuario && usuario.trim() !== "") {
-        nomeUsuario.textContent = usuario;
-    } else {
-        nomeUsuario.textContent = "Visitante";
-    }
+    localStorage.setItem(
+        "tarefas",
+        JSON.stringify(tarefas)
+    );
 }
 
 function renderizarTabela() {
+
     lista.innerHTML = "";
 
-    tarefas.forEach((tarefa, index) => {
-        const novaLinha = document.createElement("tr");
+    let dados = [...tarefas];
 
-        const tdTitulo = document.createElement("td");
-        tdTitulo.textContent = tarefa.titulo;
+    const pesquisa = searchInput.value.toLowerCase();
 
-        const tdDescricao = document.createElement("td");
-        tdDescricao.textContent = tarefa.descricao;
+    if (pesquisa) {
 
-        const tdAcoes = document.createElement("td");
+        dados = dados.filter(item =>
+            item.titulo.toLowerCase().includes(pesquisa)
+            ||
+            item.codigo.toLowerCase().includes(pesquisa)
+            ||
+            item.categoria.toLowerCase().includes(pesquisa)
+        );
+    }
 
-        const botaoEditar = document.createElement("button");
-        botaoEditar.type = "button";
-        botaoEditar.textContent = "Editar";
-        botaoEditar.addEventListener("click", function () {
-            editarItem(index);
+    if (colunaOrdenacao) {
+
+        dados.sort((a, b) => {
+
+            let valorA = a[colunaOrdenacao];
+            let valorB = b[colunaOrdenacao];
+
+            if (typeof valorA === "string") {
+
+                valorA = valorA.toLowerCase();
+                valorB = valorB.toLowerCase();
+            }
+
+            if (valorA < valorB)
+                return ordemAscendente ? -1 : 1;
+
+            if (valorA > valorB)
+                return ordemAscendente ? 1 : -1;
+
+            return 0;
         });
+    }
 
-        const botaoExcluir = document.createElement("button");
-        botaoExcluir.type = "button";
-        botaoExcluir.textContent = "Excluir";
-        botaoExcluir.addEventListener("click", function () {
-            excluirItem(index);
-        });
+    const totalPaginas =
+        Math.ceil(dados.length / itensPorPagina);
 
-        tdAcoes.appendChild(botaoEditar);
-        tdAcoes.appendChild(botaoExcluir);
+    const inicio =
+        (paginaAtual - 1) * itensPorPagina;
 
-        novaLinha.appendChild(tdTitulo);
-        novaLinha.appendChild(tdDescricao);
-        novaLinha.appendChild(tdAcoes);
-        lista.appendChild(novaLinha);
+    const fim =
+        inicio + itensPorPagina;
+
+    const itensPagina =
+        dados.slice(inicio, fim);
+
+    itensPagina.forEach((item, index) => {
+
+        const tr = document.createElement("tr");
+
+        tr.innerHTML = `
+
+            <td>
+                <input type="checkbox">
+            </td>
+
+            <td>${item.titulo}</td>
+
+            <td>${item.codigo}</td>
+
+            <td>${item.categoria}</td>
+
+            <td>
+                R$ ${parseFloat(item.preco || 0).toFixed(2)}
+            </td>
+
+            <td>
+                <div class="canais">
+
+                    ${item.canais.map(canal => `
+                        <span class="canal-chip">
+                            ${canal}
+                        </span>
+                    `).join("")}
+
+                </div>
+            </td>
+
+            <td>${item.descricao}</td>
+
+            <td>
+                <span class="status ativo">
+                    Ativo
+                </span>
+            </td>
+
+            <td>${item.dataCadastro}</td>
+
+            <td class="acoes">
+
+                <button
+                    class="btn-icon"
+                    onclick="editarItem(${inicio + index})"
+                >
+                    Editar
+                </button>
+
+                <button
+                    class="btn-icon"
+                    onclick="excluirItem(${inicio + index})"
+                >
+                    Excluir
+                </button>
+
+            </td>
+        `;
+
+        lista.appendChild(tr);
     });
+
+    paginationInfo.textContent =
+        `${dados.length} itens`;
+
+    currentPageText.textContent =
+        paginaAtual;
+
+    prevPage.disabled = paginaAtual === 1;
+
+    nextPage.disabled =
+    paginaAtual >= totalPaginas
+    || totalPaginas === 0;
 }
 
 function excluirItem(index) {
+
     tarefas.splice(index, 1);
-    localStorage.setItem("tarefas", JSON.stringify(tarefas));
+
+    salvarDados();
+
     renderizarTabela();
 }
 
 function editarItem(index) {
+
     const item = tarefas[index];
 
-    document.getElementById("titulo").value    = item.titulo;
-    document.getElementById("codigo").value    = item.codigo    || "";
-    document.getElementById("categoria").value = item.categoria || "";
-    document.getElementById("preco").value     = item.preco     || "";
-    document.getElementById("descricao").value = item.descricao;
+    if (!item) return;
 
-    document.querySelectorAll("input[name='canais']").forEach(c => {
-        c.checked = item.canais && item.canais.includes(c.value);
+    document.getElementById("titulo").value =
+        item.titulo;
+
+    document.getElementById("codigo").value =
+        item.codigo;
+
+    document.getElementById("categoria").value =
+        item.categoria;
+
+    document.getElementById("preco").value =
+        item.preco;
+
+    document.getElementById("descricao").value =
+        item.descricao;
+
+    document.querySelectorAll(
+        "input[name='canais']"
+    ).forEach(c => {
+
+        c.checked =
+            item.canais.includes(c.value);
     });
 
     editandoIndex = index;
+
     botaoSalvar.textContent = "Atualizar";
 
-    atualizarTodosLabels();
-
-    document.getElementById("form").scrollIntoView({ behavior: "smooth" });
+    document.getElementById("form")
+        .scrollIntoView({
+            behavior: "smooth"
+        });
 }
+
+searchInput.addEventListener("input", () => {
+
+    paginaAtual = 1;
+
+    renderizarTabela();
+});
+
+prevPage.addEventListener("click", () => {
+
+    if (paginaAtual > 1) {
+
+        paginaAtual--;
+
+        renderizarTabela();
+    }
+});
+
+nextPage.addEventListener("click", () => {
+
+    const totalPaginas =
+        Math.ceil(tarefas.length / itensPorPagina);
+
+    if (paginaAtual < totalPaginas) {
+
+        paginaAtual++;
+
+        renderizarTabela();
+    }
+});
+
+document.querySelectorAll("th[data-sort]")
+.forEach(th => {
+
+    th.addEventListener("click", () => {
+
+        const campo =
+            th.dataset.sort;
+
+        if (colunaOrdenacao === campo) {
+
+            ordemAscendente =
+                !ordemAscendente;
+
+        } else {
+
+            colunaOrdenacao = campo;
+
+            ordemAscendente = true;
+        }
+
+        renderizarTabela();
+    });
+});
