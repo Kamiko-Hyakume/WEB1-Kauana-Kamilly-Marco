@@ -4,11 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
-
+    <meta name="description" content="Sistema simples de gerenciamento de itens com CRUDL para estudo de HTML, CSS e JavaScript">
     <link rel="stylesheet" href="style/style.css">
-
     <title>Comercio.com</title>
 </head>
 
@@ -17,30 +14,25 @@
     <header class="header">
 
         <div class="topo">
-
             <a href="index.html" class="logo">
-                <img src="imgs/image.png" alt="Logo do site">
+                <img src="imgs/image.png" alt="Logo Comercio.com">
             </a>
-
             <h1>Comercio.com</h1>
-
             <div class="usuario-logado">
                 <img src="imgs/image.png" class="avatar" alt="Foto do usuário">
                 <span id="nomeUsuario">Usuário</span>
             </div>
         </div>
 
-        <nav>
+        <nav aria-label="Menu principal">
             <ul class="menu">
                 <li><a href="#">Início</a></li>
-
                 <li>
                     <a href="#">Cadastrar</a>
                     <ul class="submenu">
                         <li><a href="#form">Inserir Item</a></li>
                     </ul>
                 </li>
-
                 <li>
                     <a href="#">Gerenciar</a>
                     <ul class="submenu">
@@ -54,204 +46,123 @@
 
     <main class="main-content">
 
-        <!-- FORM -->
         <section id="form" class="card">
             <h2>Cadastrar Item</h2>
 
-            <form id="taskForm">
+            <form id="taskForm" novalidate>
 
-                <div class="field-group">
-                    <input type="text" class="field-input" id="titulo" name="titulo" autocomplete="off" maxlength="100"
-                        required>
-                    <label class="field-label" for="titulo">Título *</label>
-                </div>
+                <div class="form-grid">
 
-                <div class="field-group">
-                    <input type="text" class="field-input" id="codigo" name="codigo" autocomplete="off" maxlength="20"
-                        required>
-                    <label class="field-label" for="codigo">Código *</label>
-                </div>
+                    <div class="field-group">
+                        <input type="text" class="field-input" id="titulo" name="titulo"
+                            placeholder=" " autocomplete="off" maxlength="100" required>
+                        <label class="field-label" for="titulo">Título *</label>
+                    </div>
 
-                <div class="field-group">
-                    <select class="field-input field-select" id="categoria" name="categoria" required>
-                        <!-- Removido o option placeholder para evitar texto duplicado com o floating label -->
-                        <option value="" selected disabled hidden></option>
+                    <div class="field-group">
+                        <input type="text" class="field-input" id="codigo" name="codigo"
+                            placeholder=" " autocomplete="off" maxlength="20" required>
+                        <label class="field-label" for="codigo">Código *</label>
+                    </div>
 
-                        <option value="eletronicos">
-                            Eletrônicos
-                        </option>
+                    <div class="field-group">
+                        <select class="field-input field-select" id="categoria" name="categoria" required>
+                            <option value="" disabled selected hidden></option>
+                            <option value="eletronicos">Eletrônicos</option>
+                            <option value="roupas">Roupas e Acessórios</option>
+                            <option value="alimentos">Alimentos e Bebidas</option>
+                            <option value="moveis">Móveis e Decoração</option>
+                            <option value="livros">Livros e Mídia</option>
+                            <option value="esportes">Esportes e Lazer</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                        <label class="field-label" for="categoria">Categoria *</label>
+                    </div>
 
-                        <option value="roupas">
-                            Roupas e Acessórios
-                        </option>
+                    <div class="field-group">
+                        <input type="number" class="field-input" id="preco" name="preco"
+                            placeholder=" " min="0.01" step="0.01" autocomplete="off" required>
+                        <label class="field-label" for="preco">Preço (R$) *</label>
+                    </div>
 
-                        <option value="alimentos">
-                            Alimentos e Bebidas
-                        </option>
-
-                        <option value="moveis">
-                            Móveis e Decoração
-                        </option>
-
-                        <option value="livros">
-                            Livros e Mídia
-                        </option>
-
-                        <option value="esportes">
-                            Esportes e Lazer
-                        </option>
-
-                        <option value="outros">
-                            Outros
-                        </option>
-
-                    </select>
-
-                    <label class="field-label" for="categoria">
-                        Categoria *
-                    </label>
-
-                </div>
-
-                <div class="field-group">
-                    <input type="number" class="field-input" id="preco" name="preco" min="0.01" step="0.01"
-                        autocomplete="off">
-                    <label class="field-label" for="preco">Preço (R$) *</label>
-                </div>
-
-                <div class="field-group">
-                    <textarea class="field-input field-textarea" id="descricao" name="descricao"
-                        maxlength="500"></textarea>
-                    <label class="field-label" for="descricao">Descrição *</label>
-                </div>
-
-                <div class="checkbox-section">
-
-                    <span class="checkbox-section__label">
-                        Canais de venda disponíveis
-                    </span>
-
-                    <div class="checkbox-group">
-
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="loja_fisica" name="canais" value="loja_fisica">
-                            <label for="loja_fisica">Loja Física</label>
-                        </div>
-
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="site" name="canais" value="site">
-                            <label for="site">Site</label>
-                        </div>
-
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="app" name="canais" value="app">
-                            <label for="app">Aplicativo</label>
-                        </div>
-
-                        <div class="checkbox-item">
-                            <input type="checkbox" id="marketplace" name="canais" value="marketplace">
-                            <label for="marketplace">Marketplace</label>
-                        </div>
-
+                    <div class="field-group col-full">
+                        <textarea class="field-input field-textarea" id="descricao" name="descricao"
+                            placeholder=" " maxlength="500"></textarea>
+                        <label class="field-label" for="descricao">Descrição</label>
                     </div>
 
                 </div>
 
-                <div class="button-group">
-
-                    <button type="reset" id="botaoLimpar" class="btn btn-outlined">
-                        Limpar
-                    </button>
-
-                    <button type="submit" id="botaoSalvar" class="btn btn-filled">
-                        Salvar
-                    </button>
-
+                <div class="checkbox-section">
+                    <span class="checkbox-section__label">Canais de venda disponíveis</span>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="loja_fisica" name="canais" value="loja_fisica">
+                            <label for="loja_fisica">Loja Física</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="site" name="canais" value="site">
+                            <label for="site">Site</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="app" name="canais" value="app">
+                            <label for="app">Aplicativo</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="marketplace" name="canais" value="marketplace">
+                            <label for="marketplace">Marketplace</label>
+                        </div>
+                    </div>
                 </div>
-               <!-- DataTable -->
-<section class="material-table">
 
-    <div class="table-header">
+                <div class="button-group">
+                    <button type="reset" id="botaoLimpar" class="btn btn-outlined">Limpar</button>
+                    <button type="submit" id="botaoSalvar" class="btn btn-filled">Salvar</button>
+                </div>
 
-        <div>
-            <h3>Lista de Produtos</h3>
-            <span class="table-subtitle">
-                Gerencie os itens cadastrados
-            </span>
-        </div>
+            </form>
 
-        <input
-            type="text"
-            id="searchInput"
-            class="search-field"
-            placeholder="Pesquisar item..."
-        >
+            <section id="lista" class="material-table" aria-label="Lista de produtos">
 
-    </div>
+                <div class="table-header">
+                    <div>
+                        <h3>Lista de Produtos</h3>
+                        <span class="table-subtitle">Gerencie os itens cadastrados</span>
+                    </div>
+                    <input type="search" id="searchInput" class="search-field"
+                        placeholder="Pesquisar item..." aria-label="Pesquisar produto">
+                </div>
 
-    <div class="table-container">
+                <div class="table-container">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th><input type="checkbox" id="checkAll" aria-label="Selecionar todos"></th>
+                                <th data-sort="titulo">Título</th>
+                                <th data-sort="codigo">Código</th>
+                                <th data-sort="categoria">Categoria</th>
+                                <th data-sort="preco">Preço</th>
+                                <th>Canais</th>
+                                <th>Descrição</th>
+                                <th>Status</th>
+                                <th data-sort="dataCadastro">Data</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="taskList"></tbody>
+                    </table>
+                </div>
 
-        <table class="data-table">
+                <div class="table-footer">
+                    <span id="paginationInfo">0 itens</span>
+                    <div class="pagination">
+                        <button id="prevPage" aria-label="Página anterior">&#9664;</button>
+                        <span id="currentPage">1</span>
+                        <button id="nextPage" aria-label="Próxima página">&#9654;</button>
+                    </div>
+                </div>
 
-            <thead>
-                <tr>
-
-                    <th>
-                        <input type="checkbox" id="checkAll">
-                    </th>
-
-                    <th data-sort="titulo">Título</th>
-
-                    <th data-sort="codigo">Código</th>
-
-                    <th data-sort="categoria">Categoria</th>
-
-                    <th data-sort="preco">Preço</th>
-
-                    <th>Canais</th>
-
-                    <th>Descrição</th>
-
-                    <th>Status</th>
-
-                    <th data-sort="dataCadastro">Data</th>
-
-                    <th>Ações</th>
-
-                </tr>
-            </thead>
-
-            <tbody id="taskList"></tbody>
-
-        </table>
-
-    </div>
-
-    <div class="table-footer">
-
-        <span id="paginationInfo">
-            0 itens
-        </span>
-
-        <div class="pagination">
-
-            <button id="prevPage">
-                ◀
-            </button>
-
-            <span id="currentPage">
-                1
-            </span>
-
-            <button id="nextPage">
-                ▶
-            </button>
-
-        </div>
-
-    </div>
-
-</section>
+            </section>
 
         </section>
 
@@ -260,9 +171,9 @@
     <footer class="footer">
         <p>
             Site criado por
-            <a href="https://github.com/Kamiko-Hyakume" target="_blank">Kauana</a>,
-            <a href="https://github.com/kamillybirkner" target="_blank">Kamilly</a>
-            e <a href="https://github.com/marco-wolff" target="_blank">Marco</a>
+            <a href="https://github.com/Kamiko-Hyakume" target="_blank" rel="noopener">Kauana</a>,
+            <a href="https://github.com/kamillybirkner" target="_blank" rel="noopener">Kamilly</a>
+            e <a href="https://github.com/marco-wolff" target="_blank" rel="noopener">Marco</a>
         </p>
     </footer>
 

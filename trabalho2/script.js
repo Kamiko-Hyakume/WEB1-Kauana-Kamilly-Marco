@@ -1,335 +1,293 @@
-const form = document.getElementById("taskForm");
-const lista = document.getElementById("taskList");
-
-const searchInput = document.getElementById("searchInput");
-
-const paginationInfo = document.getElementById("paginationInfo");
-const currentPageText = document.getElementById("currentPage");
-
-const prevPage = document.getElementById("prevPage");
-const nextPage = document.getElementById("nextPage");
-
-const botaoSalvar = document.getElementById("botaoSalvar");
-
-let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
-
-let editandoIndex = null;
-
-let paginaAtual = 1;
-
-const itensPorPagina = 5;
-
-let colunaOrdenacao = null;
-
-let ordemAscendente = true;
-
 document.addEventListener("DOMContentLoaded", () => {
-    renderizarTabela();
-});
 
-form.addEventListener("submit", function (event) {
+  // ─── Estado da aplicação ─────────────────────────────────────────────────────
 
+  const state = {
+    tarefas: JSON.parse(localStorage.getItem("tarefas")) || [],
+    editandoId: null,        // ID único do item em edição (não índice de página)
+    paginaAtual: 1,
+    itensPorPagina: 5,
+    pesquisa: "",
+    ordenacao: { coluna: null, ascendente: true },
+  };
+
+  // ─── Referências ao DOM ───────────────────────────────────────────────────────
+  // Todas as referências ficam aqui dentro, garantindo que o DOM já foi carregado.
+
+  const els = {
+    form:           document.getElementById("taskForm"),
+    lista:          document.getElementById("taskList"),
+    searchInput:    document.getElementById("searchInput"),
+    paginationInfo: document.getElementById("paginationInfo"),
+    currentPage:    document.getElementById("currentPage"),
+    prevPage:       document.getElementById("prevPage"),
+    nextPage:       document.getElementById("nextPage"),
+    botaoSalvar:    document.getElementById("botaoSalvar"),
+    botaoLimpar:    document.getElementById("botaoLimpar"),
+    secaoForm:      document.getElementById("form"),
+  };
+
+  // ─── Migração: garante que itens antigos (sem id) ganhem um ID ───────────────
+
+  (function migrarDadosAntigos() {
+    let precisaSalvar = false;
+    state.tarefas.forEach((item) => {
+      if (!item.id) {
+        item.id = gerarId();
+        precisaSalvar = true;
+      }
+    });
+    if (precisaSalvar) salvarDados();
+  })();
+
+  // ─── Inicialização ────────────────────────────────────────────────────────────
+
+  renderizarTabela();
+
+  document.querySelectorAll("select.field-select").forEach((sel) => {
+    updateSelectState(sel);
+    sel.addEventListener("change", () => updateSelectState(sel));
+  });
+
+  // ─── Persistência ─────────────────────────────────────────────────────────────
+
+  function salvarDados() {
+    localStorage.setItem("tarefas", JSON.stringify(state.tarefas));
+  }
+
+  // ─── Formulário ───────────────────────────────────────────────────────────────
+
+  els.form.addEventListener("submit", (event) => {
     event.preventDefault();
 
-    const titulo =
-        document.getElementById("titulo").value.trim();
+    const dadosFormulario = lerFormulario();
 
-    const codigo =
-        document.getElementById("codigo").value.trim();
+    if (state.editandoId !== null) {
+      atualizarTarefa(state.editandoId, dadosFormulario);
+    } else {
+      adicionarTarefa(dadosFormulario);
+    }
 
-    const categoria =
-        document.getElementById("categoria").value;
+    resetarFormulario();
+    salvarDados();
+    renderizarTabela();
+  });
 
-    const preco =
-        document.getElementById("preco").value;
+  // O botão "Limpar" é type="reset" (limpa os campos nativamente),
+  // mas precisamos também resetar o estado de edição manualmente.
+  els.botaoLimpar.addEventListener("click", () => {
+    resetarFormulario();
+  });
 
-    const descricao =
-        document.getElementById("descricao").value.trim();
-
-    const canais = [
-        ...document.querySelectorAll(
-            "input[name='canais']:checked"
-        )
-    ].map(c => c.value);
-
-    const item = {
-
-        titulo,
-        codigo,
-        categoria,
-        preco,
-        descricao,
-        canais,
-
-        status: "ativo",
-
-        dataCadastro:
-            editandoIndex !== null
-            ? tarefas[editandoIndex].dataCadastro
-            : new Date().toLocaleDateString("pt-BR")
+  /** Lê e retorna os valores atuais do formulário. */
+  function lerFormulario() {
+    return {
+      titulo:    document.getElementById("titulo").value.trim(),
+      codigo:    document.getElementById("codigo").value.trim(),
+      categoria: document.getElementById("categoria").value,
+      preco:     document.getElementById("preco").value,
+      descricao: document.getElementById("descricao").value.trim(),
+      canais:    [...document.querySelectorAll("input[name='canais']:checked")]
+                   .map((c) => c.value),
     };
+  }
 
-    if (editandoIndex !== null) {
-
-        tarefas[editandoIndex] = item;
-
-        editandoIndex = null;
-    
-        console.log("Item atualizado:", item);
-
-        botaoSalvar.textContent = "Salvar";
-
-    }  else {
-        tarefas.push(item);
-    }
-
-    salvarDados();
-
-    renderizarTabela();
-
-    form.reset();
-    document
-    .querySelectorAll("input[name='canais']")
-    .forEach(c => c.checked = false);
-});
-
-function salvarDados() {
-
-    localStorage.setItem(
-        "tarefas",
-        JSON.stringify(tarefas)
-    );
-}
-
-function renderizarTabela() {
-
-    lista.innerHTML = "";
-
-    let dados = [...tarefas];
-
-    const pesquisa = searchInput.value.toLowerCase();
-
-    if (pesquisa) {
-
-        dados = dados.filter(item =>
-            item.titulo.toLowerCase().includes(pesquisa)
-            ||
-            item.codigo.toLowerCase().includes(pesquisa)
-            ||
-            item.categoria.toLowerCase().includes(pesquisa)
-        );
-    }
-
-    if (colunaOrdenacao) {
-
-        dados.sort((a, b) => {
-
-            let valorA = a[colunaOrdenacao];
-            let valorB = b[colunaOrdenacao];
-
-            if (typeof valorA === "string") {
-
-                valorA = valorA.toLowerCase();
-                valorB = valorB.toLowerCase();
-            }
-
-            if (valorA < valorB)
-                return ordemAscendente ? -1 : 1;
-
-            if (valorA > valorB)
-                return ordemAscendente ? 1 : -1;
-
-            return 0;
-        });
-    }
-
-    const totalPaginas =
-        Math.ceil(dados.length / itensPorPagina);
-
-    const inicio =
-        (paginaAtual - 1) * itensPorPagina;
-
-    const fim =
-        inicio + itensPorPagina;
-
-    const itensPagina =
-        dados.slice(inicio, fim);
-
-    itensPagina.forEach((item, index) => {
-
-        const tr = document.createElement("tr");
-
-        tr.innerHTML = `
-
-            <td>
-                <input type="checkbox">
-            </td>
-
-            <td>${item.titulo}</td>
-
-            <td>${item.codigo}</td>
-
-            <td>${item.categoria}</td>
-
-            <td>
-                R$ ${parseFloat(item.preco || 0).toFixed(2)}
-            </td>
-
-            <td>
-                <div class="canais">
-
-                    ${item.canais.map(canal => `
-                        <span class="canal-chip">
-                            ${canal}
-                        </span>
-                    `).join("")}
-
-                </div>
-            </td>
-
-            <td>${item.descricao}</td>
-
-            <td>
-                <span class="status ativo">
-                    Ativo
-                </span>
-            </td>
-
-            <td>${item.dataCadastro}</td>
-
-            <td class="acoes">
-
-                <button
-                    class="btn-icon"
-                    onclick="editarItem(${inicio + index})"
-                >
-                    Editar
-                </button>
-
-                <button
-                    class="btn-icon"
-                    onclick="excluirItem(${inicio + index})"
-                >
-                    Excluir
-                </button>
-
-            </td>
-        `;
-
-        lista.appendChild(tr);
+  /** Adiciona uma nova tarefa ao array com status e data de cadastro. */
+  function adicionarTarefa(dados) {
+    state.tarefas.push({
+      ...dados,
+      id: gerarId(),
+      status: "ativo",
+      dataCadastro: new Date().toLocaleDateString("pt-BR"),
     });
+  }
 
-    paginationInfo.textContent =
-        `${dados.length} itens`;
+  /**
+   * Atualiza a tarefa pelo ID único, preservando id, status e dataCadastro.
+   *
+   * CORREÇÃO: antes o código usava o índice relativo da página como chave
+   * de busca no array global, o que causava criação de item duplicado
+   * quando a paginação estava ativa. Agora usamos um ID único e estável.
+   */
+  function atualizarTarefa(id, novosDados) {
+    const indexReal = state.tarefas.findIndex((t) => t.id === id);
+    if (indexReal === -1) return;
 
-    currentPageText.textContent =
-        paginaAtual;
+    state.tarefas[indexReal] = {
+      ...state.tarefas[indexReal], // preserva id, status, dataCadastro
+      ...novosDados,               // sobrescreve apenas os campos editáveis
+    };
+  }
 
-    prevPage.disabled = paginaAtual === 1;
+  /** Gera um ID simples baseado em timestamp + random. */
+  function gerarId() {
+    return `${Date.now()}-${Math.random().toString(36).slice(2, 7)}`;
+  }
 
-    nextPage.disabled =
-    paginaAtual >= totalPaginas
-    || totalPaginas === 0;
-}
+  /** Adiciona/remove .has-value no <select> conforme o valor atual. */
+  function updateSelectState(sel) {
+    sel.classList.toggle("has-value", !!sel.value);
+  }
 
-function excluirItem(index) {
+  /** Limpa o formulário, desmarca checkboxes e restaura o botão "Salvar". */
+  function resetarFormulario() {
+    els.form.reset();
+    document.querySelectorAll("input[name='canais']").forEach((c) => (c.checked = false));
+    document.querySelectorAll("select.field-select").forEach(updateSelectState);
+    els.botaoSalvar.textContent = "Salvar";
+    state.editandoId = null;
+  }
 
-    tarefas.splice(index, 1);
+  // ─── Ações da tabela ──────────────────────────────────────────────────────────
 
-    salvarDados();
-
-    renderizarTabela();
-}
-
-function editarItem(index) {
-
-    const item = tarefas[index];
-
+  /**
+   * Preenche o formulário com os dados do item e entra em modo de edição.
+   * Exposta no window para funcionar nos onclick gerados dinamicamente no HTML.
+   */
+  window.editarItem = function (id) {
+    const item = state.tarefas.find((t) => t.id === id);
     if (!item) return;
 
-    document.getElementById("titulo").value =
-        item.titulo;
+    document.getElementById("titulo").value    = item.titulo;
+    document.getElementById("codigo").value    = item.codigo;
+    document.getElementById("categoria").value = item.categoria;
+    updateSelectState(document.getElementById("categoria"));
+    document.getElementById("preco").value     = item.preco;
+    document.getElementById("descricao").value = item.descricao;
 
-    document.getElementById("codigo").value =
-        item.codigo;
-
-    document.getElementById("categoria").value =
-        item.categoria;
-
-    document.getElementById("preco").value =
-        item.preco;
-
-    document.getElementById("descricao").value =
-        item.descricao;
-
-    document.querySelectorAll(
-        "input[name='canais']"
-    ).forEach(c => {
-
-        c.checked =
-            item.canais.includes(c.value);
+    document.querySelectorAll("input[name='canais']").forEach((c) => {
+      c.checked = item.canais.includes(c.value);
     });
 
-    editandoIndex = index;
+    state.editandoId = item.id;
+    els.botaoSalvar.textContent = "Atualizar";
 
-    botaoSalvar.textContent = "Atualizar";
+    // Rola até a section com id="form" (não o <form> em si)
+    els.secaoForm.scrollIntoView({ behavior: "smooth" });
+  };
 
-    document.getElementById("form")
-        .scrollIntoView({
-            behavior: "smooth"
-        });
-}
-
-searchInput.addEventListener("input", () => {
-
-    paginaAtual = 1;
-
+  /** Remove definitivamente um item pelo ID. Exposta no window pelo mesmo motivo. */
+  window.excluirItem = function (id) {
+    state.tarefas = state.tarefas.filter((t) => t.id !== id);
+    salvarDados();
     renderizarTabela();
-});
+  };
 
-prevPage.addEventListener("click", () => {
+  // ─── Renderização da tabela ───────────────────────────────────────────────────
 
-    if (paginaAtual > 1) {
+  function renderizarTabela() {
+    els.lista.innerHTML = "";
 
-        paginaAtual--;
+    const dadosFiltrados          = filtrar(state.tarefas, state.pesquisa);
+    const dadosOrdenados          = ordenar(dadosFiltrados, state.ordenacao);
+    const { pagina, totalPaginas } = paginar(dadosOrdenados);
 
-        renderizarTabela();
-    }
-});
+    pagina.forEach((item) => els.lista.appendChild(criarLinha(item)));
 
-nextPage.addEventListener("click", () => {
+    atualizarPaginacao(dadosFiltrados.length, totalPaginas);
+  }
 
-    const totalPaginas =
-        Math.ceil(tarefas.length / itensPorPagina);
+  /** Filtra por título, código ou categoria. */
+  function filtrar(dados, pesquisa) {
+    if (!pesquisa) return dados;
+    const termo = pesquisa.toLowerCase();
+    return dados.filter(
+      (item) =>
+        item.titulo.toLowerCase().includes(termo) ||
+        item.codigo.toLowerCase().includes(termo) ||
+        item.categoria.toLowerCase().includes(termo)
+    );
+  }
 
-    if (paginaAtual < totalPaginas) {
-
-        paginaAtual++;
-
-        renderizarTabela();
-    }
-});
-
-document.querySelectorAll("th[data-sort]")
-.forEach(th => {
-
-    th.addEventListener("click", () => {
-
-        const campo =
-            th.dataset.sort;
-
-        if (colunaOrdenacao === campo) {
-
-            ordemAscendente =
-                !ordemAscendente;
-
-        } else {
-
-            colunaOrdenacao = campo;
-
-            ordemAscendente = true;
-        }
-
-        renderizarTabela();
+  /** Ordena pelo campo configurado no estado. */
+  function ordenar(dados, { coluna, ascendente }) {
+    if (!coluna) return dados;
+    return [...dados].sort((a, b) => {
+      let valA = typeof a[coluna] === "string" ? a[coluna].toLowerCase() : a[coluna];
+      let valB = typeof b[coluna] === "string" ? b[coluna].toLowerCase() : b[coluna];
+      if (valA < valB) return ascendente ? -1 : 1;
+      if (valA > valB) return ascendente ? 1 : -1;
+      return 0;
     });
-});
+  }
+
+  /** Fatia o array para a página atual e retorna também o total de páginas. */
+  function paginar(dados) {
+    const totalPaginas = Math.ceil(dados.length / state.itensPorPagina);
+    const inicio       = (state.paginaAtual - 1) * state.itensPorPagina;
+    const pagina       = dados.slice(inicio, inicio + state.itensPorPagina);
+    return { pagina, totalPaginas };
+  }
+
+  /** Cria e retorna um <tr> para o item recebido. */
+  function criarLinha(item) {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td><input type="checkbox"></td>
+      <td>${item.titulo}</td>
+      <td>${item.codigo}</td>
+      <td>${item.categoria}</td>
+      <td>R$ ${parseFloat(item.preco || 0).toFixed(2)}</td>
+      <td>
+        <div class="canais">
+          ${item.canais.map((canal) => `<span class="canal-chip">${canal}</span>`).join("")}
+        </div>
+      </td>
+      <td>${item.descricao}</td>
+      <td><span class="status ativo">Ativo</span></td>
+      <td>${item.dataCadastro}</td>
+      <td class="acoes">
+        <button class="btn-icon" onclick="editarItem('${item.id}')">Editar</button>
+        <button class="btn-icon" onclick="excluirItem('${item.id}')">Excluir</button>
+      </td>
+    `;
+    return tr;
+  }
+
+  /** Atualiza textos e botões de paginação. */
+  function atualizarPaginacao(totalItens, totalPaginas) {
+    els.paginationInfo.textContent = `${totalItens} itens`;
+    els.currentPage.textContent    = state.paginaAtual;
+    els.prevPage.disabled          = state.paginaAtual === 1;
+    els.nextPage.disabled          = state.paginaAtual >= totalPaginas || totalPaginas === 0;
+  }
+
+  // ─── Eventos: pesquisa, paginação e ordenação ─────────────────────────────────
+
+  els.searchInput.addEventListener("input", () => {
+    state.pesquisa    = els.searchInput.value.toLowerCase();
+    state.paginaAtual = 1;
+    renderizarTabela();
+  });
+
+  els.prevPage.addEventListener("click", () => {
+    if (state.paginaAtual > 1) {
+      state.paginaAtual--;
+      renderizarTabela();
+    }
+  });
+
+  els.nextPage.addEventListener("click", () => {
+    const totalPaginas = Math.ceil(
+      filtrar(state.tarefas, state.pesquisa).length / state.itensPorPagina
+    );
+    if (state.paginaAtual < totalPaginas) {
+      state.paginaAtual++;
+      renderizarTabela();
+    }
+  });
+
+  document.querySelectorAll("th[data-sort]").forEach((th) => {
+    th.addEventListener("click", () => {
+      const campo = th.dataset.sort;
+      if (state.ordenacao.coluna === campo) {
+        state.ordenacao.ascendente = !state.ordenacao.ascendente;
+      } else {
+        state.ordenacao.coluna     = campo;
+        state.ordenacao.ascendente = true;
+      }
+      renderizarTabela();
+    });
+  });
+
+}); // fim do DOMContentLoaded
