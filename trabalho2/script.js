@@ -49,6 +49,13 @@ document.addEventListener("DOMContentLoaded", () => {
     sel.addEventListener("change", () => updateSelectState(sel));
   });
 
+  ["titulo", "codigo", "categoria", "preco"].forEach((id) => {
+    const el = document.getElementById(id);
+    const limparErro = function () { this.closest(".field-group").classList.remove("field-error"); };
+    el.addEventListener("input", limparErro);
+    el.addEventListener("change", limparErro);
+  });
+
   // ─── Persistência ─────────────────────────────────────────────────────────────
 
   function salvarDados() {
@@ -59,6 +66,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   els.form.addEventListener("submit", (event) => {
     event.preventDefault();
+
+    if (!validarFormulario()) return;
 
     const dadosFormulario = lerFormulario();
 
@@ -78,6 +87,28 @@ document.addEventListener("DOMContentLoaded", () => {
   els.botaoLimpar.addEventListener("click", () => {
     resetarFormulario();
   });
+
+  /** Valida os campos obrigatórios e marca visualmente os inválidos. */
+  function validarFormulario() {
+    const campos = [
+      { el: document.getElementById("titulo"),    check: (v) => v.trim() !== "" },
+      { el: document.getElementById("codigo"),    check: (v) => v.trim() !== "" },
+      { el: document.getElementById("categoria"), check: (v) => v !== "" },
+      { el: document.getElementById("preco"),     check: (v) => v !== "" && parseFloat(v) > 0 },
+    ];
+
+    let valido = true;
+    campos.forEach(({ el, check }) => {
+      const grupo = el.closest(".field-group");
+      if (!check(el.value)) {
+        grupo.classList.add("field-error");
+        valido = false;
+      } else {
+        grupo.classList.remove("field-error");
+      }
+    });
+    return valido;
+  }
 
   /** Lê e retorna os valores atuais do formulário. */
   function lerFormulario() {
@@ -134,6 +165,7 @@ document.addEventListener("DOMContentLoaded", () => {
     els.form.reset();
     document.querySelectorAll("input[name='canais']").forEach((c) => (c.checked = false));
     document.querySelectorAll("select.field-select").forEach(updateSelectState);
+    document.querySelectorAll(".field-group.field-error").forEach((g) => g.classList.remove("field-error"));
     els.botaoSalvar.textContent = "Salvar";
     state.editandoId = null;
   }

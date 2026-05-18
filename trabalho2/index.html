@@ -57,12 +57,14 @@
                         <input type="text" class="field-input" id="titulo" name="titulo"
                             placeholder=" " autocomplete="off" maxlength="100" required>
                         <label class="field-label" for="titulo">Título *</label>
+                        <span class="field-error-msg" role="alert">Campo obrigatório</span>
                     </div>
 
                     <div class="field-group">
                         <input type="text" class="field-input" id="codigo" name="codigo"
                             placeholder=" " autocomplete="off" maxlength="20" required>
                         <label class="field-label" for="codigo">Código *</label>
+                        <span class="field-error-msg" role="alert">Campo obrigatório</span>
                     </div>
 
                     <div class="field-group">
@@ -77,12 +79,14 @@
                             <option value="outros">Outros</option>
                         </select>
                         <label class="field-label" for="categoria">Categoria *</label>
+                        <span class="field-error-msg" role="alert">Campo obrigatório</span>
                     </div>
 
                     <div class="field-group">
                         <input type="number" class="field-input" id="preco" name="preco"
                             placeholder=" " min="0.01" step="0.01" autocomplete="off" required>
                         <label class="field-label" for="preco">Preço (R$) *</label>
+                        <span class="field-error-msg" role="alert">Informe um preço válido (maior que zero)</span>
                     </div>
 
                     <div class="field-group col-full">

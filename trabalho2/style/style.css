@@ -260,6 +260,27 @@ form {
     padding: 20px 15px 7px;
 }
 
+.field-group.field-error .field-input {
+    border: 2px solid var(--md-error);
+    padding: 20px 15px 7px;
+}
+
+.field-group.field-error .field-label {
+    color: var(--md-error);
+}
+
+.field-error-msg {
+    font-size: 0.75rem;
+    color: var(--md-error);
+    margin-top: 4px;
+    padding-left: 16px;
+    display: none;
+}
+
+.field-group.field-error .field-error-msg {
+    display: block;
+}
+
 /* Textarea */
 .field-textarea {
     height: auto;
